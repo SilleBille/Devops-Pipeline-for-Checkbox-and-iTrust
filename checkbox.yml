@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  vars:
+    vm_ip: 192.168.25.220
+  roles:
+    - createVM
+
+- hosts: 192.168.25.220
+  roles:
+    - checkboxSetup
+    - checkboxRestartServices
+...
