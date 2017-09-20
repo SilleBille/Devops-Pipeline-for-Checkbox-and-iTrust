@@ -25,7 +25,7 @@
 - name: Copying trusty64's Vagrantfile
   template: src=Vagrantfile.j2 dest={{ ansible_env.HOME }}/{{vm_ip}}/Vagrantfile
 
-- name: Creating a new VM using vagrant
+- name: Creating a VM using vagrant
   shell: cd {{ ansible_env.HOME }}/{{vm_ip}}; vagrant up
   register: command_result
   changed_when: 'command_result.stdout.find("VirtualBox VM is already running") == -1'
