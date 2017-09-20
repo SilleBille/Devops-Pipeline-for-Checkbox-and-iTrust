@@ -1,2 +1,5 @@
 [checkbox.io]
-192.168.25.220 ansible_ssh_user=vagrant ansible_ssh_private_key_file=~/192.168.25.220/.vagrant/machines/default/virtualbox/private_key ansible_python_interpreter=/usr/bin/python3
+192.168.25.220 ansible_user=vagrant ansible_ssh_private_key_file=~/192.168.25.220/.vagrant/machines/default/virtualbox/private_key ansible_python_interpreter=/usr/bin/python3
+
+[iTrust]
+192.168.32.100 ansible_user=vagrant ansible_ssh_private_key_file=~/192.168.32.100/.vagrant/machines/default/virtualbox/private_key ansible_python_interpreter=/usr/bin/python3

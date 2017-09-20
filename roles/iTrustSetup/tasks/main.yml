@@ -1,0 +1,6 @@
+---
+# tasks file for vagrant
+- include: jdkSetup.yml
+- include: apacheSetup.yml
+- include: mySqlSetup.yml
+...

@@ -1,0 +1,21 @@
+- include_vars: jdk_vars.yml
+
+- name: "Install Necessary JDK packages"
+  apt: package="{{item}}" state="present"
+  become: yes
+  with_items: "{{packages}}"
+
+
+- name: Adding apt-key for the JDK
+  apt_repository:
+    repo: 'ppa:webupd8team/java'
+    update_cache: yes
+  become: yes
+
+- name: Accept licenses automatically
+  shell: echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
+  become: yes
+
+- name: Install java 8
+  apt: package="oracle-java8-installer" state="present"
+  become: yes

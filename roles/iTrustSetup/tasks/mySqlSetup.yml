@@ -1,0 +1,15 @@
+- include_vars: mysql_vars.yml
+
+- name: "Installing mysql"
+  apt: package="mysql-server" state="present"
+  environment:
+    DEBIAN_FRONTEND=noninteractive
+  become: yes
+
+- name: "Disable Case Sensitivity"
+  template: src=sql_template.cnf.j2 dest={{ mysql_location }}/my.cnf
+  become: yes
+
+- name: "Restart mysql service"
+  service: name=mysql state=restarted
+  become: yes
