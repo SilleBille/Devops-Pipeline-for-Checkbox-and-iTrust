@@ -1,0 +1,4 @@
+apacheDeployLocation: /usr/local/tomcat9/webapps/iTrust
+# Need to change the following variable based on @manush
+iTrustRepoLocation: /var/lib/jenkins/workspace/iTrust/iTrust/
+iTrustTempLocation: /tmp/iTrust
