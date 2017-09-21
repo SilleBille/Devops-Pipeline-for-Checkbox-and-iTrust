@@ -29,4 +29,8 @@
   shell: cd {{ ansible_env.HOME }}/{{vm_ip}}; vagrant up
   register: command_result
   changed_when: 'command_result.stdout.find("VirtualBox VM is already running") == -1'
+
+- name: Wait for the VM to boot up to SSH
+  pause:
+    seconds: 15
 ...
