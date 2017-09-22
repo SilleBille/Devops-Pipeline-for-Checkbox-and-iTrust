@@ -14,13 +14,4 @@ packages:
   - nodejs-legacy
   - nginx
   - python3-pip
-
-env_vars:
-  MONGO_PORT: 3002
-  MONGO_IP: 127.0.0.1
-  MONGO_USER: "{{mongodb_user}}"
-  MONGO_PASSWORD: "{{mongodb_pass}}"
-  MAIL_USER: asd
-  MAIL_PASSWORD: asds
-  MAIL_SMTP: "smtp.gmail.com"
 ...
