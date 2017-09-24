@@ -1,0 +1,38 @@
+---
+- name: Download Jenkins CLI jar file
+  get_url:
+    url: http://{{ jenkins_ip }}:{{ jenkins_port }}/jnlpJars/jenkins-cli.jar
+    dest: '{{ jenkins_cli_jar_loc }}/.'
+
+- name: Install the package "npm"
+  apt:
+    name: npm
+    state: present
+  become: yes
+
+- name: Create a template xml file for Jenkins checkbox build job
+  template: src=build_xml.j2 dest=/tmp/checkbox_temp.xml
+
+- name: Update Sudoers file for Jenkins User
+  lineinfile:
+    dest: /etc/sudoers
+    line: 'jenkins ALL=(ALL) NOPASSWD: ALL'
+  become: yes
+
+- name: Ensure Jenkins job does not exist in Jenkins Jobs
+  stat: path=/var/lib/jenkins/jobs/{{jenkins_checkbox_job_name}}
+  register: jenkins_cb_stat
+
+- name: Delete jenkins jobs if it exists
+  become: yes
+  shell: "java -jar {{ jenkins_cli_jar_loc }}/jenkins-cli.jar -s http://{{ jenkins_ip }}:{{ jenkins_port }}/ delete-job {{jenkins_checkbox_job_name}} "
+  when: jenkins_cb_stat.stat.exists==True
+
+- name: create jenkins jobs with xml files
+  become: yes
+  shell: "java -jar {{ jenkins_cli_jar_loc }}/jenkins-cli.jar -s http://{{ jenkins_ip }}:{{ jenkins_port }}/ create-job {{jenkins_checkbox_job_name}} < /tmp/checkbox_temp.xml "
+
+- name: Build Jenkins Job for Checkbox_io
+  become: yes
+  shell: "java -jar {{ jenkins_cli_jar_loc }}/jenkins-cli.jar -s http://{{ jenkins_ip }}:{{ jenkins_port }}/ build {{jenkins_checkbox_job_name}} -s"
+
