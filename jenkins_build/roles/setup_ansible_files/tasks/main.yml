@@ -1,0 +1,27 @@
+# Deleting the folder and unzipping each time, to ensure that the files in the folder are consistent with the files in the zip.
+- name: Adding jenkins user to have access to root
+  lineinfile: dest=/etc/sudoers.d/jenkins2
+              create=yes
+              state=present
+              line="jenkins ALL=(ALL) NOPASSWD:ALL"
+  become: yes
+
+- name: Delete folder
+  file:
+    state: absent
+    path: "/tmp/jenkins_ansible"
+
+- name: Create folder if not present
+  file:
+    state: directory
+    path: "/tmp/jenkins_ansible"
+    owner: jenkins
+    group: jenkins
+  become: yes
+
+- name: Unzipping the anisble files used for post build
+  unarchive:
+    src: app_deploy.zip
+    dest: "/tmp/jenkins_ansible/"
+    owner: jenkins
+  become: yes

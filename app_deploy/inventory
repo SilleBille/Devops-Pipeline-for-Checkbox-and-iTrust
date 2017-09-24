@@ -1,5 +1,5 @@
 [checkbox.io]
-192.168.25.220 ansible_user=vagrant ansible_ssh_private_key_file=~/192.168.25.220/.vagrant/machines/default/virtualbox/private_key ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+192.168.25.220 ansible_user=vagrant ansible_ssh_private_key_file=/var/lib/jenkins/192.168.25.220/.vagrant/machines/default/virtualbox/private_key ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 [iTrust]
-192.168.32.100 ansible_user=vagrant ansible_ssh_private_key_file=~/192.168.32.100/.vagrant/machines/default/virtualbox/private_key ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+192.168.32.100 ansible_user=vagrant ansible_ssh_private_key_file=/var/lib/jenkins/192.168.32.100/.vagrant/machines/default/virtualbox/private_key ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no'

@@ -1,5 +1,5 @@
 ---
-- hosts: nodes
+- hosts: localhost
   remote_user: ubuntu
 
   vars:
@@ -12,6 +12,6 @@
     jenkins_cli_jar_loc: /home/ubuntu
 
   roles:
+    - setup_ansible_files
     - checkbox_build
     - iTrust_build
-
