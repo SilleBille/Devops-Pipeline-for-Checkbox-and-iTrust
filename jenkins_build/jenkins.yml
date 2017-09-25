@@ -1,27 +1,4 @@
 ---
-- hosts: localhost
-  remote_user: ubuntu
-
-  vars:
-    jenkins_ip: localhost
-    jenkins_port: 8080
-    jenkins_iTrust_job_name: iTrustJob2
-    jenkins_checkbox_job_name: checkboxJob2
-    ansible_home_dir: "{{ ansible_env.HOME }}"
-    jenkins_cli_jar_loc: "{{ansible_home_dir}}"
-
-    jenkins_username: "mkd_test1"
-    jenkins_password: "mkd_test_passwd_1"
-
-    jenkins:
-      url_username: "{{jenkins_username}}"
-      url_password: "{{jenkins_password}}"
-      url: "http://{{jenkins_ip}}:{{jenkins_port}}"
-      validate_certs: no
-
-  roles:
-    - installJenkins
-    - setup_ansible_files
-    - checkbox_build
-    - iTrust_build
-
+- include: installJenkins.yml
+- include: jenkinsBuild.yml
+...

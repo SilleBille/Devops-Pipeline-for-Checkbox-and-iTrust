@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  remote_user: ubuntu
+
+  roles:
+    - setup_ansible_files
+    - checkbox_build
+    - iTrust_build
+...

@@ -1,7 +1,4 @@
 ---
-- name: Check Who Am I
-  shell: whoami
- 
 - name: Installing Git - Maven
   apt:
     name: "{{ item }}"
@@ -10,6 +7,7 @@
   with_items:
     - git
     - maven
+  become: yes
  
 - name: Adding Oracle Repository
   apt_repository:
@@ -23,12 +21,14 @@
     name: oracle-java8-installer    
     state: present
     update_cache: yes
+  become: yes
  
 - name: Adding Jenkins Repository Key
   apt_key:
     url: "https://jenkins-ci.org/debian/jenkins-ci.org.key"
     state: present
     validate_certs: no
+  become: yes
  
 - name: Check For Jenkins List   
   stat:
@@ -37,6 +37,7 @@
  
 - name: Adding Jenkins Source List
   shell: sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+  become: yes
  
 - name: Installing Jenkins
   apt:
@@ -44,9 +45,11 @@
     state: present
     update_cache: yes
   register: jenkins_install
+  become: yes
  
 - name: Copy the demo-config.xml file
   template: src=demo-config.xml.j2 dest=/var/lib/jenkins/config.xml
+  become: yes
  
 - name: Enable the firewall
   shell: ufw enable
@@ -60,6 +63,7 @@
   service:
     name: jenkins
     state: restarted
+  become: yes
 
 - name: "Wait For Jenkins To Come Up"
   uri:
@@ -76,14 +80,17 @@
     path: "/var/lib/jenkins/init.groovy.d"
     state: directory
     mode: 0777
+  become: yes
  
 - name: Create a template xml file for Jenkins checkbox build job
   template: src=jenkins_script.groovy.j2 dest=/var/lib/jenkins/init.groovy.d/basic-security.groovy mode=0777
+  become: yes
 
 - name: Restart Jenkins
   service:
     name: jenkins
     state: restarted
+  become: yes
 
 - name: "Wait For Jenkins To Come Up"
   uri:
@@ -98,6 +105,7 @@
   file:
     path: "/var/lib/jenkins/init.groovy.d/basic-security.groovy"
     state: absent
+  become: yes
  
 - name: Install Jenkin Plugins
   jenkins_plugin:
@@ -113,6 +121,7 @@
     - build-timeout
     - postbuild-task
     - ws-cleanup
+  become: yes
 
   register: jenkins_plugins
  
@@ -120,6 +129,7 @@
   service:
     name: jenkins
     state: restarted
+  become: yes
  
 - name: "Wait For Jenkins To Come Up"
   uri:
@@ -129,10 +139,4 @@
   until: result.status == 200
   retries: 60
   delay: 10
-
-- name: Restarting Jenkins Again for Plugins
-  service:
-    name: jenkins
-    state: started
- 
-
+...

@@ -10,6 +10,7 @@
   file:
     state: absent
     path: "/tmp/jenkins_ansible"
+  become: yes
 
 - name: Create folder if not present
   file:
@@ -17,6 +18,15 @@
     path: "/tmp/jenkins_ansible"
     owner: jenkins
     group: jenkins
+  become: yes
+
+- name: Installing zip and unzip in case it isn't installed
+  apt:
+    pkg: "{{item}}"
+    state: present
+  with_items:
+    - zip
+    - unzip
   become: yes
 
 - name: Unzipping the anisble files used for post build
