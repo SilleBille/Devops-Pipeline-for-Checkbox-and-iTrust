@@ -1,8 +1,8 @@
 
 jenkins_ip: localhost
 jenkins_port: 8080
-jenkins_iTrust_job_name: iTrustJob2
-jenkins_checkbox_job_name: checkboxJob2
+jenkins_iTrust_job_name: iTrustJob
+jenkins_checkbox_job_name: checkboxJob
 ansible_home_dir: "{{ ansible_env.HOME }}"
 jenkins_cli_jar_loc: "{{ansible_home_dir}}"
 
@@ -20,3 +20,5 @@ jenkins:
   url_password: "{{jenkins_password}}"
   url: "http://{{jenkins_ip}}:{{jenkins_port}}"
   validate_certs: no
+
+jobs_extract_location: /tmp/jenkins_ansible

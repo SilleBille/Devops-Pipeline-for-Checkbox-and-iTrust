@@ -29,7 +29,12 @@
   shell: "java -jar {{ jenkins_cli_jar_loc }}/jenkins-cli.jar -s http://{{ jenkins_ip }}:{{ jenkins_port }}/ create-job {{jenkins_checkbox_job_name}} < /tmp/checkbox_temp.xml --username {{jenkins_username}} --password {{jenkins_password}}"
   when: jenkins_cb_stat.stdout.find(jenkins_checkbox_job_name)==-1
 
+- name: Extract build location
+  lineinfile:
+    path: "{{jobs_extract_location}}/app_deploy/roles/checkboxSetup/vars/main.yml"
+    line: "checkBoxRepoLocation: /var/lib/jenkins/jobs/{{jenkins_checkbox_job_name}}/workspace/"
+    state: present
+
 - name: Build Jenkins Job for Checkbox_io
   become: yes
   shell: "java -jar {{ jenkins_cli_jar_loc }}/jenkins-cli.jar -s http://{{ jenkins_ip }}:{{ jenkins_port }}/ build {{jenkins_checkbox_job_name}} --username {{jenkins_username}} --password {{jenkins_password}} -s"
-

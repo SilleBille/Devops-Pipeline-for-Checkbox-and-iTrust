@@ -1,4 +1,3 @@
-jobs_extract_location: /tmp/jenkins_ansible
 app_deploy_vault_pass: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           32666464316166653536646339666166363763386639313062653336393038373232346464353535

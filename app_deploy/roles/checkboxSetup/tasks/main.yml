@@ -7,11 +7,10 @@
   become: yes
   with_items: "{{packages}}"
 
-- name: Cloning project from github
-  git:
-    repo: "https://github.com/chrisparnin/checkbox.io.git"
-    dest: "{{ansible_env.HOME}}/checkbox"
-    force: yes
+- name: "Copying required checkbox files for building"
+  synchronize:
+    src: "{{checkBoxRepoLocation}}"
+    dest: "{{ansible_env.HOME}}/checkbox/"
 
 - name: Install the forever node package
   npm:
