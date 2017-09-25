@@ -67,7 +67,7 @@
 
 - name: Install mongodb
   apt:
-    pkg: mongodb-org
+    pkg: mongodb
     state: present
     update_cache: yes
   become: yes
