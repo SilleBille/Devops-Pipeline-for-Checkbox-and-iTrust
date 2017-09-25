@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  remote_user: ubuntu
+
+  vars:
+    jenkins_ip: 192.168.40.100
+    jenkins_port: 8080
+    jenkins_iTrust_job_name: iTrustJob1
+    iTrust_clone_repo: /var/lib/jenkins/workspace/{{jenkins_iTrust_job_name}}
+    jenkins_checkbox_job_name: checkboxJob1
+    checkbox_clone_repo: /var/lib/jenkins/workspace/{{jenkins_checkbox_job_name}}
+    jenkins_cli_jar_loc: /home/ubuntu
+
+  roles:
+    - setup_ansible_files
+    - checkbox_build
+    - iTrust_build

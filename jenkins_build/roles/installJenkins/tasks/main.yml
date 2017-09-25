@@ -1,0 +1,135 @@
+---
+- name: Check Who Am I
+  shell: whoami
+ 
+- name: Installing Git - Maven
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - git
+    - maven
+ 
+- name: Adding Oracle Repository
+  apt_repository:
+    repo: 'ppa:webupd8team/java'
+ 
+- name: Accept Oracle License
+  debconf: name='oracle-java8-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
+ 
+- name: Installing Java-8
+  apt:
+    name: oracle-java8-installer    
+    state: present
+    update_cache: yes
+ 
+- name: Adding Jenkins Repository Key
+  apt_key:
+    url: "https://jenkins-ci.org/debian/jenkins-ci.org.key"
+    state: present
+    validate_certs: no
+ 
+- name: Check For Jenkins List   
+  stat:
+    path: /etc/apt/sources.list.d/jenkins.list
+  register: jenkins_list
+ 
+- name: Adding Jenkins Source List
+  shell: sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+ 
+- name: Installing Jenkins
+  apt:
+    name: jenkins    
+    state: present
+    update_cache: yes
+  register: jenkins_install
+ 
+- name: Copy the demo-config.xml file
+  template: src=demo-config.xml.j2 dest=/var/lib/jenkins/config.xml
+ 
+- name: Enable the firewall
+  shell: ufw enable
+  become: yes
+ 
+- name: Open port 8080
+  shell: ufw allow 8080
+  become: yes
+
+- name: Restart Jenkins
+  service:
+    name: jenkins
+    state: restarted
+
+- name: "Wait For Jenkins To Come Up"
+  uri:
+    url: "http://{{jenkins_ip}}:{{jenkins_port}}/cli/"
+#    status_code: 200
+    status_code: 403
+  register: result
+  until: result.status == 403
+  retries: 60
+  delay: 10
+
+- name: Creating Groovy Directory
+  file:
+    path: "/var/lib/jenkins/init.groovy.d"
+    state: directory
+    mode: 0777
+ 
+- name: Create a template xml file for Jenkins checkbox build job
+  template: src=jenkins_script.groovy.j2 dest=/var/lib/jenkins/init.groovy.d/basic-security.groovy mode=0777
+
+- name: Restart Jenkins
+  service:
+    name: jenkins
+    state: restarted
+
+- name: "Wait For Jenkins To Come Up"
+  uri:
+    url: "http://{{jenkins_ip}}:{{jenkins_port}}/cli/"
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 10
+
+- name: Removing User-Creation Script
+  file:
+    path: "/var/lib/jenkins/init.groovy.d/basic-security.groovy"
+    state: absent
+ 
+- name: Install Jenkin Plugins
+  jenkins_plugin:
+    name: "{{ item }}"
+    params: "{{ jenkins }}"
+  with_items:
+    - maven-plugin
+    - github
+    - jacoco
+    - junit
+    - test-stability
+    - postbuildscript
+    - build-timeout
+  register: jenkins_plugins
+ 
+- name: Restarting Jenkins Again for Plugins
+  service:
+    name: jenkins
+    state: restarted
+ 
+- name: "Wait For Jenkins To Come Up"
+  uri:
+    url: "http://{{jenkins_ip}}:{{jenkins_port}}/cli/"
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 10
+
+- name: Restarting Jenkins Again for Plugins
+  service:
+    name: jenkins
+    state: started
+ 
+

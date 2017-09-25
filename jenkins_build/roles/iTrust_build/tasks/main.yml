@@ -34,20 +34,17 @@
     line: 'jenkins ALL=(ALL) NOPASSWD: ALL'
   become: yes
 
-- name: Ensure Jenkins job does not exist 
-  stat: path=/var/lib/jenkins/jobs/{{ jenkins_iTrust_job_name }}
-  register: jenkins_it_stat
-
-- name: Delete Job if it exists
+- name: Check if job exists
   become: yes
-  shell: "java -jar {{ jenkins_cli_jar_loc }}/jenkins-cli.jar -s http://{{ jenkins_ip }}:{{ jenkins_port }}/ delete-job {{ jenkins_iTrust_job_name }} "
-  when: jenkins_it_stat.stat.exists==True
+  shell: "java -jar {{ jenkins_cli_jar_loc }}/jenkins-cli.jar -s http://{{ jenkins_ip }}:{{ jenkins_port }}/ list-jobs --username {{jenkins_username}} --password {{jenkins_password}}"
+  register: jenkins_it_stat
 
 - name: create jenkins jobs with xml files
   become: yes
-  shell: "java -jar {{ jenkins_cli_jar_loc }}/jenkins-cli.jar -s http://{{ jenkins_ip }}:{{ jenkins_port }}/ create-job {{ jenkins_iTrust_job_name }} < /tmp/itrust_temp.xml "
+  shell: "java -jar {{ jenkins_cli_jar_loc }}/jenkins-cli.jar -s http://{{ jenkins_ip }}:{{ jenkins_port }}/ create-job {{ jenkins_iTrust_job_name }} < /tmp/itrust_temp.xml --username {{jenkins_username}} --password {{jenkins_password}}"
+  when: jenkins_it_stat.stdout.find(jenkins_iTrust_job_name)==-1
 
 - name: Build Jenkins Job for iTrust
   become: yes
-  shell: "java -jar {{ jenkins_cli_jar_loc }}/jenkins-cli.jar -s http://{{ jenkins_ip }}:{{ jenkins_port }}/ build {{ jenkins_iTrust_job_name }} -s"
+  shell: "java -jar {{ jenkins_cli_jar_loc }}/jenkins-cli.jar -s http://{{ jenkins_ip }}:{{ jenkins_port }}/ build {{ jenkins_iTrust_job_name }} --username {{jenkins_username}} --password {{jenkins_password}} -s"
 
