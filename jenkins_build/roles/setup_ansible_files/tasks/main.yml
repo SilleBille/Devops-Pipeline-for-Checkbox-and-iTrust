@@ -9,12 +9,12 @@
 - name: Delete folder
   file:
     state: absent
-    path: "/tmp/jenkins_ansible"
+    path: "{{jobs_extract_location}}"
 
 - name: Create folder if not present
   file:
     state: directory
-    path: "/tmp/jenkins_ansible"
+    path: "{{jobs_extract_location}}"
     owner: jenkins
     group: jenkins
   become: yes
@@ -22,6 +22,6 @@
 - name: Unzipping the anisble files used for post build
   unarchive:
     src: app_deploy.zip
-    dest: "/tmp/jenkins_ansible/"
+    dest: "{{jobs_extract_location}}"
     owner: jenkins
   become: yes
