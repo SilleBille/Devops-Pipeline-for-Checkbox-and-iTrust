@@ -1,5 +1,5 @@
 ---
-- name: Installing Git - Maven
+- name: Installing Prerequisites
   apt:
     name: "{{ item }}"
     state: present
@@ -10,34 +10,33 @@
     - build-essential
   become: yes
  
-- name: Adding Oracle Repository
+- name: Add Oracle Repository
   apt_repository:
     repo: 'ppa:webupd8team/java'
  
 - name: Accept Oracle License
-  debconf: name='oracle-java8-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
+  debconf: 
+    name: 'oracle-java8-installer' 
+    question: 'shared/accepted-oracle-license-v1-1' 
+    value: 'true' 
+    vtype: 'select'
  
-- name: Installing Java-8
+- name: Install Java
   apt:
     name: oracle-java8-installer    
     state: present
     update_cache: yes
   become: yes
  
-- name: Adding Jenkins Repository Key
+- name: Add Jenkins Repository Key
   apt_key:
     url: "https://jenkins-ci.org/debian/jenkins-ci.org.key"
     state: present
     validate_certs: no
   become: yes
- 
-- name: Check For Jenkins List   
-  stat:
-    path: /etc/apt/sources.list.d/jenkins.list
-  register: jenkins_list
- 
-- name: Adding Jenkins Source List
-  shell: sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+
+- name: Add Jenkins Source List
+  shell: echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list
   become: yes
  
 - name: Installing Jenkins
@@ -45,19 +44,25 @@
     name: jenkins    
     state: present
     update_cache: yes
-  register: jenkins_install
   become: yes
+  register: jenkins_install
  
 - name: Copy the demo-config.xml file
-  template: src=demo-config.xml.j2 dest=/var/lib/jenkins/config.xml
+  template: 
+    src: demo-config.xml.j2 
+    dest: /var/lib/jenkins/config.xml
   become: yes
  
 - name: Enable the firewall
-  shell: ufw enable
+  ufw:
+    state: enabled
+    policy: allow
   become: yes
  
 - name: Open port 8080
-  shell: ufw allow 8080
+  ufw:
+    rule: allow 
+    port: 8080
   become: yes
 
 - name: Restart Jenkins
@@ -65,8 +70,9 @@
     name: jenkins
     state: restarted
   become: yes
+  when: jenkins_install.changed
 
-- name: "Wait For Jenkins To Come Up"
+- name: Wait for restart if user is not already configured
   uri:
     url: "http://{{jenkins_ip}}:{{jenkins_port}}/cli/"
     status_code: 403
@@ -76,7 +82,7 @@
   delay: 10
   when: jenkins_install.changed
 
-- name: Creating Groovy Directory
+- name: Creating Directory for Groovy
   file:
     path: "/var/lib/jenkins/init.groovy.d"
     state: directory
@@ -84,7 +90,10 @@
   become: yes
  
 - name: Create a template xml file for Jenkins checkbox build job
-  template: src=jenkins_script.groovy.j2 dest=/var/lib/jenkins/init.groovy.d/basic-security.groovy mode=0777
+  template: 
+    src: jenkins_script.groovy.j2 
+    dest: /var/lib/jenkins/init.groovy.d/basic-security.groovy 
+    mode: 0777
   become: yes
 
 - name: Restart Jenkins
@@ -93,7 +102,7 @@
     state: restarted
   become: yes
 
-- name: "Wait For Jenkins To Come Up"
+- name: Wait for restart
   uri:
     url: "http://{{jenkins_ip}}:{{jenkins_port}}/cli/"
     status_code: 200
@@ -113,8 +122,8 @@
     name: "{{ item }}"
     params: "{{ jenkins }}"
   with_items:
-    - maven-plugin
     - github
+    - maven-plugin
     - jacoco
     - junit
     - test-stability
@@ -123,8 +132,6 @@
     - postbuild-task
     - ws-cleanup
   become: yes
-
-  register: jenkins_plugins
  
 - name: Restarting Jenkins Again for Plugins
   service:
