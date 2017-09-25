@@ -1,9 +1,6 @@
 # CSC519-Project
 Shared repo for CSC519 Devops project
 
-## Milestones
-Milestone 1 (Work In Progress)
-
 ### Checkbox.io
 Experiences & Difficulties (Vishal):
 - Learnt how to use vault to encrypt the DB passwords
