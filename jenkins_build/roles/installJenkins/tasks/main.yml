@@ -111,6 +111,9 @@
     - test-stability
     - postbuildscript
     - build-timeout
+    - postbuild-task
+    - ws-cleanup
+
   register: jenkins_plugins
  
 - name: Restarting Jenkins Again for Plugins
