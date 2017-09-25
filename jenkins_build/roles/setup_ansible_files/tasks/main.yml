@@ -1,11 +1,10 @@
 # Deleting the folder and unzipping each time, to ensure that the files in the folder are consistent with the files in the zip.
-- name: Adding jenkins user to have access to root
-  lineinfile: dest=/etc/sudoers.d/jenkins2
-              create=yes
-              state=present
-              line="jenkins ALL=(ALL) NOPASSWD:ALL"
-  become: yes
-
+#- name: Adding jenkins user to have access to root
+#  lineinfile: dest=/etc/sudoers.d/jenkins2
+#              create=yes
+#              state=present
+#              line="jenkins ALL=(ALL) NOPASSWD:ALL"
+#  become: yes
 - name: Delete folder
   file:
     state: absent
@@ -19,9 +18,16 @@
     group: jenkins
   become: yes
 
-- name: Unzipping the anisble files used for post build
+- name: Unzipping the ansible files used for post build
   unarchive:
     src: app_deploy.zip
     dest: "{{jobs_extract_location}}"
+    owner: jenkins
+  become: yes
+
+- name: Decrypting credentials to be used by deployment jobs
+  copy:
+    content: "{{app_deploy_vault_pass}}"
+    dest: "{{jobs_extract_location}}/vault_pass.txt"
     owner: jenkins
   become: yes
