@@ -2,4 +2,4 @@
 Shared repo for CSC519 Devops project
 
 ## Milestones
-Milestone 1 (Work In Progress)
+Milestone 1  - Use the **m1** branch
