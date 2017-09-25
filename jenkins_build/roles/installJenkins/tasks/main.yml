@@ -123,12 +123,12 @@
     params: "{{ jenkins }}"
   with_items:
     - github
-    - maven-plugin
-    - jacoco
-    - junit
-    - test-stability
+#    - maven-plugin
+#    - jacoco
+#    - junit
+#    - test-stability
     - postbuildscript
-    - build-timeout
+#    - build-timeout
     - postbuild-task
     - ws-cleanup
   become: yes
