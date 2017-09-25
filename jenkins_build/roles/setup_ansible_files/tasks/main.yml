@@ -9,6 +9,7 @@
   file:
     state: absent
     path: "{{jobs_extract_location}}"
+  become: yes
 
 - name: Create folder if not present
   file:
@@ -18,7 +19,16 @@
     group: jenkins
   become: yes
 
-- name: Unzipping the ansible files used for post build
+- name: Installing zip and unzip in case it isn't installed
+  apt:
+    pkg: "{{item}}"
+    state: present
+  with_items:
+    - zip
+    - unzip
+  become: yes
+
+- name: Unzipping the anisble files used for post build
   unarchive:
     src: app_deploy.zip
     dest: "{{jobs_extract_location}}"
