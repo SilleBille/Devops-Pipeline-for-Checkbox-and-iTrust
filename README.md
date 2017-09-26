@@ -27,7 +27,7 @@ Shared repo for CSC519 Devops project
     ansible-playbook -s	jenkinsBuild.yml --ask-vault-pass -e "gitid=<GitHub ID> gitpassword=<Personal GitHub Token>" -K
 
 ### Jenkins Credentials
-    Username: mkd_test_1
+    Username: mkd_test1
     Password: mkd_test_passwd_1
 
 #### Vault Password
@@ -70,12 +70,13 @@ Experiences & Difficulties (Dinesh - dmolugu):
 
 
 ### References
-1. [Creating user through groovy script](https://gist.github.com/hayderimran7/50cb1244cc1e856873a4)
-2. [Automating provisioning of Jenkins server](https://www.calazan.com/ansible-playbook-for-provisioning-a-jenkins-ci-server/)
-3. [Creating Jobs through Jenkins CLI](https://metacpan.org/pod/jenkins-cli)
-4. [Accepting licenses through Ansible](https://coderwall.com/p/zzdapg/ansible-recipe-to-install-java-7-selecting-the-oracle-license)
-5. [Using the debconf module in ansible](http://ansible-manual.readthedocs.io/en/latest/debconf_module.html)
-6. [Installing Java](https://askubuntu.com/questions/190582/installing-java-automatically-with-silent-option/637514#637514)
-7. [Installing mySQL without root password](https://stackoverflow.com/questions/7739645/install-mysql-on-ubuntu-without-password-prompt)
-8. [Installing Tomcat](https://tecadmin.net/install-tomcat-9-on-ubuntu/#)
-9. [Deploying to Tomcat](https://www.mkyong.com/maven/how-to-deploy-maven-based-war-file-to-tomcat/)
+1.  [Creating user through groovy script](https://gist.github.com/hayderimran7/50cb1244cc1e856873a4)
+2.  [Automating provisioning of Jenkins server](https://www.calazan.com/ansible-playbook-for-provisioning-a-jenkins-ci-server/)
+3.  [Creating Jobs through Jenkins CLI](https://metacpan.org/pod/jenkins-cli)
+4.  [Accepting licenses through Ansible](https://coderwall.com/p/zzdapg/ansible-recipe-to-install-java-7-selecting-the-oracle-license)
+5.  [Using the debconf module in ansible](http://ansible-manual.readthedocs.io/en/latest/debconf_module.html)
+6.  [Installing Java](https://askubuntu.com/questions/190582/installing-java-automatically-with-silent-option/637514#637514)
+7.  [Installing mySQL without root password](https://stackoverflow.com/questions/7739645/install-mysql-on-ubuntu-without-password-prompt)
+8.  [Installing Tomcat](https://tecadmin.net/install-tomcat-9-on-ubuntu/#)
+9.  [Deploying to Tomcat](https://www.mkyong.com/maven/how-to-deploy-maven-based-war-file-to-tomcat/)
+10. [Using the UFW module in ansible](http://docs.ansible.com/ansible/latest/ufw_module.html)
