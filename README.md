@@ -1,6 +1,11 @@
 # CSC519-Project
 Shared repo for CSC519 Devops project
 
+## Screencast videos
+1. [Initial setup of Jenkins and jobs](https://youtu.be/imblg5dbplI)
+2. [Checkbox.io demo](https://youtu.be/aLI4A-pZERQ)
+3. [iTrust demo](https://youtu.be/6xCsl53w4ZM)
+
 ## Environment required to run the project
     - Ubuntu 16.04 x64 (Desktop Edition) – running natively
     - Ansible 2.4.0.0 installed
@@ -20,6 +25,10 @@ Shared repo for CSC519 Devops project
     
 ### To setup Jenkins build jobs
     ansible-playbook -s	jenkinsBuild.yml --ask-vault-pass -e "gitid=<GitHub ID> gitpassword=<Personal GitHub Token>" -K
+
+### Jenkins Credentials
+    Username: mkd_test_1
+    Password: mkd_test_passwd_1
 
 #### Vault Password
     jenkins
@@ -61,11 +70,11 @@ Experiences & Difficulties (Dinesh - dmolugu):
 
 
 ### References
-1. https://gist.github.com/hayderimran7/50cb1244cc1e856873a4
-2. https://www.calazan.com/ansible-playbook-for-provisioning-a-jenkins-ci-server/
-3. https://metacpan.org/pod/jenkins-cli
-4. https://coderwall.com/p/zzdapg/ansible-recipe-to-install-java-7-selecting-the-oracle-license
-5. http://ansible-manual.readthedocs.io/en/latest/debconf_module.html
+1. [Creating user through groovy script](https://gist.github.com/hayderimran7/50cb1244cc1e856873a4)
+2. [Automating provisioning of Jenkins server](https://www.calazan.com/ansible-playbook-for-provisioning-a-jenkins-ci-server/)
+3. [Creating Jobs through Jenkins CLI](https://metacpan.org/pod/jenkins-cli)
+4. [Accepting licenses through Ansible](https://coderwall.com/p/zzdapg/ansible-recipe-to-install-java-7-selecting-the-oracle-license)
+5. [Using the debconf module in ansible](http://ansible-manual.readthedocs.io/en/latest/debconf_module.html)
 6. [Installing Java](https://askubuntu.com/questions/190582/installing-java-automatically-with-silent-option/637514#637514)
 7. [Installing mySQL without root password](https://stackoverflow.com/questions/7739645/install-mysql-on-ubuntu-without-password-prompt)
 8. [Installing Tomcat](https://tecadmin.net/install-tomcat-9-on-ubuntu/#)
