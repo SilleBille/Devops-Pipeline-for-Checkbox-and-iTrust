@@ -13,7 +13,7 @@ Experiences & Difficulties (Mukundram):
 ### Jenkins Build
 Experiences & Difficulties (Manushri):
 - Learnt how to use Jenkins using CLI, especially with the various Jenkins user security mechanisms.
-- Learnt how to create, update, delete a job in Jenkins. This project also gave me an opportunity to implement Ansible roles. 
+- Learnt how to create, update and delete a job in Jenkins. This project also gave me an opportunity to implement Ansible roles. 
 - As the script needed to be idempotent, it was a little tricky to figure out how to restart Jenkins server and handle the various user login settings from CLI.
 - It also gave me a good understanding on how a Jenkins Job looks like in the xml format.
 
@@ -28,8 +28,8 @@ Experiences & Difficulties (Vishal):
 
 ### iTrust
 Experiences & Difficulties (Dinesh):
-- Learnt how to accepting license noninteractively while installing JDK and mysql
-- Learnt how to set up mysql-server without root password (while installing rather than modifying user later)
+- Learnt how to accept licenses non-interactively while installing packages (JDK and mysql)
+- Learnt how to set up mysql-server without root password (during installation rather than modifying the user later)
 - I needed to learn more about SIGNUP and how processes run in tty. I was able to start Apache Tomcat server but was unable to keep it in RUNNING state. Later learnt more about tty and NOHUP.
 
 
