@@ -8,6 +8,7 @@ Experiences & Difficulties (Mukundram):
 - Learnt scripting in groovy; integerated groovy scripts as startup scripts for Jenkins
 - Studied the various cases in which 'register' statement can be used within a playbook/role; ensured idempotency, several cases of which were becuase of the 'register' statement
 - Familiarized with passing around usernames and passwords dynamically
+- Faced issues related to status code that jenkins returned during different situations
 
 
 ### Jenkins Build
@@ -36,3 +37,4 @@ Experiences & Difficulties (Dinesh):
 ### References
 1. https://gist.github.com/hayderimran7/50cb1244cc1e856873a4
 2. https://www.calazan.com/ansible-playbook-for-provisioning-a-jenkins-ci-server/
+3. https://metacpan.org/pod/jenkins-cli
