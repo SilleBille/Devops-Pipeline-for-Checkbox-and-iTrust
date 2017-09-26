@@ -1,5 +1,5 @@
 ---
-- name: Installing Prerequisites
+- name: Install Prerequisites
   apt:
     name: "{{ item }}"
     state: present
@@ -39,7 +39,7 @@
   shell: echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list
   become: yes
  
-- name: Installing Jenkins
+- name: Install Jenkins
   apt:
     name: jenkins    
     state: present
@@ -72,7 +72,7 @@
   become: yes
   when: jenkins_install.changed
 
-- name: Wait for restart if user is not already configured
+- name: Wait for restart
   uri:
     url: "http://{{jenkins_ip}}:{{jenkins_port}}/cli/"
     status_code: 403
@@ -82,7 +82,7 @@
   delay: 10
   when: jenkins_install.changed
 
-- name: Creating Directory for Groovy
+- name: Create a directory for Groovy
   file:
     path: "/var/lib/jenkins/init.groovy.d"
     state: directory
@@ -96,7 +96,7 @@
     mode: 0777
   become: yes
 
-- name: Restart Jenkins
+- name: Restart Jenkins (creates user through startup script)
   service:
     name: jenkins
     state: restarted
@@ -111,7 +111,7 @@
   retries: 60
   delay: 10
 
-- name: Removing User-Creation Script
+- name: Remove User-Creation Script
   file:
     path: "/var/lib/jenkins/init.groovy.d/basic-security.groovy"
     state: absent
@@ -123,23 +123,18 @@
     params: "{{ jenkins }}"
   with_items:
     - github
-#    - maven-plugin
-#    - jacoco
-#    - junit
-#    - test-stability
     - postbuildscript
-#    - build-timeout
     - postbuild-task
     - ws-cleanup
   become: yes
  
-- name: Restarting Jenkins Again for Plugins
+- name: Restart Jenkins (for plugins)
   service:
     name: jenkins
     state: restarted
   become: yes
  
-- name: "Wait For Jenkins To Come Up"
+- name: Wait for restart
   uri:
     url: "http://{{jenkins_ip}}:{{jenkins_port}}/cli/"
     status_code: 200
