@@ -38,3 +38,5 @@ Experiences & Difficulties (Dinesh):
 1. https://gist.github.com/hayderimran7/50cb1244cc1e856873a4
 2. https://www.calazan.com/ansible-playbook-for-provisioning-a-jenkins-ci-server/
 3. https://metacpan.org/pod/jenkins-cli
+4. https://coderwall.com/p/zzdapg/ansible-recipe-to-install-java-7-selecting-the-oracle-license
+5. http://ansible-manual.readthedocs.io/en/latest/debconf_module.html
