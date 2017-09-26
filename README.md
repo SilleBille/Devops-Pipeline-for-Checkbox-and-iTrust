@@ -1,6 +1,32 @@
 # CSC519-Project
 Shared repo for CSC519 Devops project
 
+## Environment required to run the project
+    - Ubuntu 16.04 x64 (Desktop Edition) – running natively
+    - Ansible 2.4.0.0 installed
+    - Cloned Github repo – m1 branch
+    
+## Instructions to run the project
+    git clone https://github.ncsu.edu/dmolugu/CSC519-Project.git
+    cd CSC519-Project
+    git checkout m1    
+    cd jenkins_build
+    
+### To run the complete setup
+    ansible-playbook -s jenkins.yml --ask-vault-pass -e "gitid=<GitHub ID> gitpassword=<Personal GitHub Token>" -K
+    
+### To setup Jenkins Environment
+    ansible-playbook -s installJenkins.yml --ask-vault-pass -K
+    
+### To setup Jenkins build jobs
+    ansible-playbook -s	jenkinsBuild.yml --ask-vault-pass -e "gitid=<GitHub ID> gitpassword=<Personal GitHub Token>" -K
+
+#### Vault Password
+    jenkins
+
+### Details about the directory structure
+* The `app_deploy` contains the code to deploy **iTrust** and **checkbox.io**. This folder is zipped and placed [here](https://github.ncsu.edu/dmolugu/CSC519-Project/tree/m1/jenkins_build/roles/setup_ansible_files/files)
+* The `jenkins_build` contains the code to setup Jenkins Environment and create build jobs for **iTrust** and **checkbox.io**
 
 ### Jenkins and Environment Setup
 Experiences & Difficulties (Mukundram - mmurali5):
@@ -40,3 +66,7 @@ Experiences & Difficulties (Dinesh - dmolugu):
 3. https://metacpan.org/pod/jenkins-cli
 4. https://coderwall.com/p/zzdapg/ansible-recipe-to-install-java-7-selecting-the-oracle-license
 5. http://ansible-manual.readthedocs.io/en/latest/debconf_module.html
+6. [Installing Java](https://askubuntu.com/questions/190582/installing-java-automatically-with-silent-option/637514#637514)
+7. [Installing mySQL without root password](https://stackoverflow.com/questions/7739645/install-mysql-on-ubuntu-without-password-prompt)
+8. [Installing Tomcat](https://tecadmin.net/install-tomcat-9-on-ubuntu/#)
+9. [Deploying to Tomcat](https://www.mkyong.com/maven/how-to-deploy-maven-based-war-file-to-tomcat/)
