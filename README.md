@@ -1,6 +1,7 @@
 # CSC519-Project
 Shared repo for CSC519 Devops project
 
+
 ### Jenkins and Environment Setup
 Experiences & Difficulties (Mukundram):
 - Recollected the usage of roles and playbooks in Ansible
@@ -8,12 +9,14 @@ Experiences & Difficulties (Mukundram):
 - Studied the various cases in which 'register' statement can be used within a playbook/role; ensured idempotency, several cases of which were becuase of the 'register' statement
 - Familiarized with passing around usernames and passwords dynamically
 
+
 ### Jenkins Build
 Experiences & Difficulties (Manushri):
 - Learnt how to use Jenkins using CLI, especially with the various Jenkins user security mechanisms.
 - Learnt how to create, update, delete a job in Jenkins. This project also gave me an opportunity to implement Ansible roles. 
 - As the script needed to be idempotent, it was a little tricky to figure out how to restart Jenkins server and handle the various user login settings from CLI.
 - It also gave me a good understanding on how a Jenkins Job looks like in the xml format.
+
 
 ### Checkbox.io
 Experiences & Difficulties (Vishal):
@@ -28,3 +31,8 @@ Experiences & Difficulties (Dinesh):
 - Learnt how to accepting license noninteractively while installing JDK and mysql
 - Learnt how to set up mysql-server without root password (while installing rather than modifying user later)
 - I needed to learn more about SIGNUP and how processes run in tty. I was able to start Apache Tomcat server but was unable to keep it in RUNNING state. Later learnt more about tty and NOHUP.
+
+
+### References
+1. https://gist.github.com/hayderimran7/50cb1244cc1e856873a4
+2. https://www.calazan.com/ansible-playbook-for-provisioning-a-jenkins-ci-server/
