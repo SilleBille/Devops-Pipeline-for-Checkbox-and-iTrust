@@ -59,7 +59,10 @@ var commitFuzz = function (iterations) {
     {
         javaFiles.forEach(function(file){
             fuzzer.fuzzFile(file);
-        })
+        });
+        
+        // TODO code to commit and rollback to be added here.
+        // When committing, a jenkins job would be triggered to run the build.
     }
 }
 
