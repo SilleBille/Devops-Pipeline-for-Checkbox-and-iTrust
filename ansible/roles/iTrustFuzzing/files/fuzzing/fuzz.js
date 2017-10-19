@@ -55,9 +55,23 @@ var fuzzer =
 }
 
 function commit(masterSHA, commitNumber) {
-    execSync("git add iTrust/src");
+    // Stash the copy of changes
+    execSync("git stash");
+
+    // Ensure the HEAD is attached to actual branch (ie) fuzzer
+    execSync("git checkout fuzzer");
+
+    // Now apply all changes that are in stash
+    execSync("git checkout stash -- .");
+
+    // Commit with the masterSHA for which the fuzzing has been created
     execSync(`git commit -m "Fuzzing commit for master: ` + masterSHA + ` Build #` + commitNumber + `"`);
+
+    // Push the changes to the fuzzer branch
     execSync("git push origin fuzzer");
+
+    // Drop any stash and keep the stack clean
+    execSync("git stash drop");
 }
 
 function triggerJenkinsBuild(lastCommitSha) {
@@ -96,8 +110,8 @@ var commitFuzz = function (iterations) {
         // Commit random changes
         commit(masterSHA, iterations);
 
-        // Trigger build Jenkins build job
-        //triggerJenkinsBuild(getSHA('HEAD'));
+        // Trigger build Jenkins build job for the latest commit on `Fuzzer` branch
+        triggerJenkinsBuild(getSHA('fuzzer'));
     }
 }
 
