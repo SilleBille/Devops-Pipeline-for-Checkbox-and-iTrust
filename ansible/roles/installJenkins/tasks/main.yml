@@ -130,6 +130,7 @@
     - github
     - postbuild-task
     - ws-cleanup
+    - jacoco
   become: yes
 
 - name: Update Sudoers file for Jenkins User
