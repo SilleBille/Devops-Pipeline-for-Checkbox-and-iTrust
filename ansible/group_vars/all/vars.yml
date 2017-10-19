@@ -3,6 +3,7 @@ jenkins_ip: localhost
 jenkins_port: 8080
 ansible_home_dir: "{{ ansible_env.HOME }}"
 jenkins_cli_jar_loc: "{{ansible_home_dir}}"
+jenkins_home_dir: /var/lib/jenkins/
 
 jenkins_iTrust_fuzzer_job_name: iTrust-fuzzer-job
 
