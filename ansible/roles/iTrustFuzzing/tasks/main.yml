@@ -1,0 +1,11 @@
+---
+  - name: Copy iTrust Fuzzer job
+    template: src=iTrustFuzzer-job.xml.j2 dest=/tmp/iTrustFuzzerJob.xml
+
+  - name: Check if job exists
+    shell: "java -jar {{ jenkins_cli_jar_loc }}/jenkins-cli.jar -s http://{{ jenkins_ip }}:{{ jenkins_port }}/ list-jobs --username {{jenkins_username}} --password {{jenkins_password}}"
+    register: jenkins_cb_stat
+
+  - name: create jenkins jobs with xml files
+    shell: "java -jar {{ jenkins_cli_jar_loc }}/jenkins-cli.jar -s http://{{ jenkins_ip }}:{{ jenkins_port }}/ create-job {{jenkins_iTrust_fuzzer_job_name}} < /tmp/iTrustFuzzerJob.xml --username {{jenkins_username}} --password {{jenkins_password}}"
+    when: jenkins_cb_stat.stdout.find(jenkins_iTrust_fuzzer_job_name)==-1

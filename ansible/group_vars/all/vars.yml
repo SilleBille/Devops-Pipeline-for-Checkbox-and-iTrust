@@ -4,6 +4,8 @@ jenkins_port: 8080
 ansible_home_dir: "{{ ansible_env.HOME }}"
 jenkins_cli_jar_loc: "{{ansible_home_dir}}"
 
+jenkins_iTrust_fuzzer_job_name: iTrust-fuzzer-job
+
 jenkins_username: mkd_test1
 jenkins_password: !vault |
       $ANSIBLE_VAULT;1.1;AES256

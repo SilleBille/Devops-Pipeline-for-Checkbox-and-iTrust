@@ -132,6 +132,12 @@
     - ws-cleanup
   become: yes
 
+- name: Update Sudoers file for Jenkins User
+  lineinfile:
+    dest: /etc/sudoers
+    line: 'jenkins ALL=(ALL) NOPASSWD: ALL'
+  become: yes
+
 - name: Restart Jenkins (for plugins)
   service:
     name: jenkins
@@ -146,4 +152,9 @@
   until: result.status == 200
   retries: 60
   delay: 10
+
+- name: Download Jenkins CLI jar file
+  get_url:
+    url: http://{{ jenkins_ip }}:{{ jenkins_port }}/jnlpJars/jenkins-cli.jar
+    dest: '{{ jenkins_cli_jar_loc }}/.'
 ...
