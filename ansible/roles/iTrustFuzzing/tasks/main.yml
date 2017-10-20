@@ -15,7 +15,13 @@
       src: fuzzing
       dest: "{{jenkins_home_dir}}"
     become: yes
-  
+
+  - name: copy fuzz.js template
+    template:
+      src: fuzz.js.j2
+      dest: "{{jenkins_home_dir}}/fuzzing/fuzz.js"
+    become: yes
+
   - name: copy useless tests program to Jenkins home dir
     copy:
       src: uselesstests

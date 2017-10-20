@@ -9,7 +9,7 @@ var getJavaFiles = function (dir) {
     var javaFiles = [];
     var files = glob.sync(dir + "/**/*.java")
     files.forEach(function (file){
-        if(!file.match("/model/"))
+        if(!file.match("/model/") && !file.match("/sql/"))
             javaFiles.push(file);
     })
     return javaFiles;
@@ -76,7 +76,7 @@ function commit(masterSHA, commitNumber) {
 
 function triggerJenkinsBuild(lastCommitSha) {
     console.log("Triggering build for " + lastCommitSha);
-    execSync('curl http://${JENKINS_IP}:8080/git/notifyCommit?url=${GITHUB_URL}&branches=fuzzer&sha1=' + lastCommitSha);
+    execSync('curl http://{{jenkins_ip}}:8080/git/notifyCommit?url={{github_iTrust_project}}&branches=fuzzer&sha1=' + lastCommitSha);
 }
 
 function revertToOriginal(masterSHA) {
