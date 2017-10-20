@@ -131,6 +131,7 @@
     - postbuild-task
     - ws-cleanup
     - jacoco
+    - random-string-parameter
   become: yes
 
 - name: Update Sudoers file for Jenkins User
