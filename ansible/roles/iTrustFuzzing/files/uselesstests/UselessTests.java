@@ -1,5 +1,3 @@
-package uselesstests;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -19,7 +18,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class UselessTests 
 {
-	private static final File junitFile = new File("junitResult.xml"); // This is the path of the junit result file
+	private static File junitFile;
 	private static boolean className = false;
 	private static boolean testName = false;
 	private static boolean failedSince = false;
@@ -28,23 +27,65 @@ public class UselessTests
 	private static String testCase = null;
 	private static Map<String, String> passedCases = new HashMap<>();
 	private static Set<String> listOfTestCases = new HashSet<>();
+	private static final String FILEPATH = "/var/lib/jenkins/jobs/iTrust-fuzzer-job/builds";
+
+	public static boolean isInteger(String s) {
+		try { 
+			Integer.parseInt(s); 
+		} catch(NumberFormatException e) { 
+			return false; 
+		} catch(NullPointerException e) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	private static int getLatestBuildNumber()
+	{
+		File folder = new File(FILEPATH);
+		String[] names = folder.list();
+		int maxInteger = 1;
+	
+		for(String name : names)
+		{
+			if(isInteger(name))
+			{
+				int intVal = Integer.parseInt(name);
+				if(maxInteger < intVal)
+					maxInteger = intVal;
+			}
+		}
+
+		return maxInteger;
+	}
 	
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException 
 	{
-		if(!junitFile.exists())
-		{
-			System.err.println("Cannot find junitResult.xml at specified path: " + junitFile.getAbsolutePath());
-			System.exit(1);
-		}
-		
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		SAXParser parser = factory.newSAXParser();
+
+		int buildNumber = getLatestBuildNumber();
+		int originalBuildNumber = buildNumber;
+		int maxIterations = 100;
+
+		while(buildNumber > 0 && maxIterations-- > 0)
+		{
+			junitFile = new File(FILEPATH + "/" + buildNumber + "/junitResult.xml"); // This is the path of the junit result file
+
+			if(!junitFile.exists())
+			{
+				System.out.println("Cannot find junitResult.xml at specified path: " + junitFile.getAbsolutePath() + ". Ignoring results from this build");
+				buildNumber--;
+				continue;
+			}
+					
+			parser.parse(junitFile, new SaxHandler());
+			buildNumber--;
+		}
 		
-		// TODO iterate over all the files to calculate the useless test cases
-		
-		parser.parse(junitFile, new SaxHandler());
-		
-		try(PrintWriter writer = new PrintWriter(new FileWriter("uselessTests.txt")))
+		final AtomicInteger count = new AtomicInteger();
+		try(PrintWriter writer = new PrintWriter(new FileWriter(FILEPATH + "/" + originalBuildNumber + "/uselessTests.txt")))
 		{
 			writer.println("Total number of useless tests: " + passedCases.size());
 			writer.println("");
@@ -52,7 +93,7 @@ public class UselessTests
 			writer.println("Test name -> Class name");
 			writer.println("-------------------------------------------");
 			passedCases.forEach((testName, clazz) -> {
-				writer.printf("%s -> %s\n", testName, clazz);
+				writer.printf("%d) %s -> %s\n", count.incrementAndGet(), testName, clazz);
 			});
 		}
 	}
