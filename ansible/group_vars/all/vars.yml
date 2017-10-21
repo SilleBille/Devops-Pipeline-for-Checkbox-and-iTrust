@@ -22,3 +22,6 @@ jenkins:
   url_password: "{{jenkins_password}}"
   url: "http://{{jenkins_ip}}:{{jenkins_port}}"
   validate_certs: no
+
+github_iTrust_project: https://github.ncsu.edu/dmolugu/iTrust-v23.git
+github_iTrust_authenticated: https://{{ansible_env.GIT_ID}}:{{ansible_env.GIT_TOKEN}}@github.ncsu.edu/dmolugu/iTrust-v23.git

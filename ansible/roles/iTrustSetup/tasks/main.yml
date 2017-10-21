@@ -16,3 +16,32 @@
   - name: "Restart mysql service"
     service: name=mysql state=restarted
     become: yes
+
+  - name: check if directory exists
+    stat: path="{{ansible_env.HOME}}/iTrust"
+    register: p
+
+  - name: clone iTrust
+    git:
+      repo: "{{github_iTrust_authenticated}}" 
+      dest: "{{ansible_env.HOME}}/iTrust"
+    when: not p.stat.exists
+
+  - name: Setup hooks
+    copy:
+      src: pre-push
+      dest: "{{ansible_env.HOME}}/iTrust/.git/hooks/"
+      mode: 0755
+
+
+  - name: Install dependencies
+    apt:
+      pkg: "{{item}}"
+      state: present
+      update_cache: yes
+    become: yes
+    with_items:
+      - npm
+      - nodejs-legacy
+      - curl
+...

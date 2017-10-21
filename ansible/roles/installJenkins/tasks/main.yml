@@ -22,12 +22,12 @@
     vtype: 'select'
   become: yes
  
-# - name: Install Java
-#   apt:
-#     name: oracle-java8-installer    
-#     state: present
-#     update_cache: yes
-#   become: yes
+- name: Install Java
+  apt:
+    name: oracle-java8-installer    
+    state: present
+    update_cache: yes
+  become: yes
  
 - name: Add Jenkins Repository Key
   apt_key:
