@@ -12,7 +12,6 @@ function main()
 
 	if( args.length == 0 )
 	{
-//		args = ["analysis.js"];
 		filepath = ["analysis.js"];
 //		complexity(ana_file);
 	} else {
@@ -26,7 +25,7 @@ function main()
 		for( var file in files)
 		{
                       if(files[file].endsWith(".js")) {
-//                              console.log(files[file]);
+//                            console.log(files[file]);
                               filepath.push(files[file])	
 			}
 		}
@@ -42,13 +41,17 @@ function main()
 	for( var node in builders )
 	{
 		var builder = builders[node];
-		if(builder.BigO > 3 || builder.SyncCalls > 1 || builder.NumLines > 120) 
+		if(builder.BigO > 3 || builder.SyncCalls > 1 || builder.NumLines > 120 || builder.longestMessageChain > 3) 
 		{
 			console.log('******FAIL******');
 			builder.report();
-//		} else {
-//			console.log('******PASS******');
 		}
+                else
+		{
+			console.log('******PASS******');
+			builder.report();
+		}
+		console.log('\n\n');
 	}
 }
 
@@ -75,6 +78,10 @@ function FunctionBuilder()
 	this.NumLines    = 0;
 	// The Number of *Sync Calls in this function.
 	this.SyncCalls    = 0;
+	// The Longest Message Chain in this function.
+	this.LongestMessageChain = 0;
+
+
 
 	this.report = function()
 	{
@@ -88,12 +95,13 @@ function FunctionBuilder()
 				"Parameters: {5}\n\n" +
 				"Big O Complexity: {6}\t" + 
 				"Number of Lines: {7}\t" +  
-				"Number of SyncCalls: {8}\n\n" 
+				"Number of SyncCalls: {8}\t" +
+				"Longest Message Chain: {9}\n\n" 
 			)
 			.format(this.FunctionName, this.StartLine,
 				     this.SimpleCyclomaticComplexity, this.MaxNestingDepth,
 			        this.MaxConditions, this.ParameterCount, this.BigO, 
-					this.NumLines, this.SyncCalls )
+					this.NumLines, this.SyncCalls, this.LongestMessageChain )
 		);
 	}
 };
@@ -138,6 +146,86 @@ function traverseWithParents(object, visitor)
     }
 }
 
+function functionLongestMessageChain(buf,functionHead)
+{
+    var start_line = functionHead.loc.start.line;
+    var end_line = functionHead.loc.end.line;
+    var current_line = 1;
+    var tracking = 0;
+    var i;
+    var longest_message_chain = 0;
+    var message_chain = 0;
+    var ignore_line = false;
+    var block_comment = false;
+    for(i=0;i<buf.length;++i)
+    {
+        if(buf[i] === '\n')
+        {
+            ++current_line;
+        }
+        if(current_line === start_line)
+        {
+            break;
+        }
+    }
+    for(;i<buf.length;++i)
+    {
+        if(buf[i] === '\n')
+        {
+            ++current_line;
+            if(message_chain > longest_message_chain)
+            {
+                longest_message_chain = message_chain;
+            }
+            message_chain = 0;
+            if(current_line > end_line)
+            {
+                break;
+            }
+        }
+        else if(buf[i] === '(')
+        {
+            ++tracking;
+        }
+        else if(buf[i] === ')')
+        {
+            --tracking;
+        }
+        else if(i<buf.length-1 && buf[i] === '/' && buf[i+1] === '/')
+        {
+            ++i;++i;
+            while(i<buf.length && buf[i]!=='\n')
+            {
+                ++i;
+            }
+            ++i;
+        }
+        else if(i<buf.length && buf[i] === '/' && buf[i+1] === '*')
+        {
+            ++i;++i;
+            while(i<buf.length-1 && !(buf[i]==='*' && buf[i+1]=='/'))
+            {
+                ++i;
+            }
+            ++i;++i;
+        }
+        else
+        {
+            if(tracking === 0)
+            {
+                if(buf[i] === '.')
+                {
+                    if(message_chain === 0) ++message_chain;
+                    ++message_chain;
+                }
+            }
+        }
+    }
+    return longest_message_chain;
+}
+
+
+
 function complexity(filePath)
 {
 	var buf = fs.readFileSync(filePath, "utf8");
@@ -164,8 +252,8 @@ function complexity(filePath)
 			functionBigO(node,0, builder);
 			builder.NumLines    = functionNumLines(node);
 			builder.SyncCalls    = functionSyncCalls(node);
+			builder.LongestMessageChain = functionLongestMessageChain(buf,node);
 		}
-
 	builders[builder.FunctionName] = builder;
  
    // PackageComplexity: The number of imports used by code.
