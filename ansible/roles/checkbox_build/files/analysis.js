@@ -5,6 +5,9 @@ var path = require('path');
 var glob = require('glob');
 var recursiveReadSync = require('recursive-readdir-sync')
 
+
+var flag= false;
+
 function main()
 {
 	var args = process.argv.slice(2);
@@ -46,6 +49,7 @@ function main()
 			console.log('******FAIL******');
 			builder.report();
 			console.log('\n\n');
+			flag=true;
 		}
                 /*else
 		{
@@ -53,6 +57,8 @@ function main()
 			builder.report();
 		}*/
 	}
+
+	if(flag==true) process.exit(1);
 }
 
 
@@ -63,6 +69,7 @@ var builders = {};
 function FunctionBuilder()
 {
 	this.StartLine = 0;
+	this.FileName = "";
 	this.FunctionName = "";
 	// The number of parameters for functions
 	this.ParameterCount  = 0,
@@ -85,6 +92,11 @@ function FunctionBuilder()
 
 	this.report = function()
 	{
+		console.log(
+		   (
+		   	"{0}: \n"
+		   ).format(this.FileName)
+		);
 		console.log(
 		   (
 		   	"{0}(): {1}\n" +
@@ -268,6 +280,7 @@ function complexity(filePath)
 		if (node.type === 'FunctionDeclaration' || node.type === 'FunctionExpression' ) 
 		{
 			builder = new FunctionBuilder();
+			builder.FileName = filePath;
 			builder.FunctionName = functionName(node);
 			builder.StartLine    = node.loc.start.line;
 			builder.ParameterCount    = functionParamCount(node);
@@ -301,14 +314,14 @@ function functionSyncCalls(node)
         var key, child;
         var count = 0;
 
-//    if(node.type=='CallExpression') {
-//        if(node.callee && node.callee.name=='readFileSync')
-//                count++;
-//    }
+    if(node.type=='CallExpression') {
+        if(node.callee && node.callee.name=='readFileSync')
+                count++;
+    }
 	traverseWithParents(node, function(child)
 	    {
- 	      	if(child.callee && child.callee.property && child.callee.property.name=='readFileSync')
-// 	      	if(child.callee && child.callee.property && child.callee.property.name.endsWith('Sync'))
+// 	      	if(child.callee && child.callee.property && child.callee.property.name=='readFileSync')
+ 	      	if(child.callee && child.callee.property && child.callee.property.name.endsWith('Sync'))
 	              count++;
 	        });
 	return count;
@@ -372,27 +385,14 @@ function functionNumLines(node)
 	var numLines=0;
         if( node.id )
         {
-//                return node.loc.end.line - node.loc.start.line;
                 numLines = node.loc.end.line - node.loc.start.line +1;
         }
         return numLines;
 }
 
 
-function functionBigO(node,depth, res)
+function functionBigO(node,children, build)
 {
-//        if( node.body )
-//        {
-//	        traverseWithParents(node, function(node){
-//        	    if(node.body.type === 'ForStatement' || node.body.type === 'WhileStatement'){
-//			console.log("Am I here \n");
-//			var obj = body[
-//	               	loops=loops+1;
-//			loops=functionBigO(node.body,loops,maxLoops);
-//            	}
-//		});
-//	}
-//	return maxLoops;
         var key, child;
         var count = 0;
         for (key in node)
@@ -405,17 +405,17 @@ function functionBigO(node,depth, res)
                                 count++;
                                 if(child.type == 'ForStatement' || child.type == 'WhileStatement' ||
                  child.type == 'ForInStatement' || child.type == 'DoWhileStatement'){
-                                        functionBigO(child, depth+1, res);
+                                        functionBigO(child, children+1, build);
                                 } else{
-                                        functionBigO(child, depth, res);
+                                        functionBigO(child, children, build);
                                 }
 
                         }
                 }
         }
 //        return count;
-        if(count == 0 && res.BigO < depth){
-                res.BigO = depth;
+        if(count == 0 && build.BigO < children){
+                build.BigO = children;
         }
 
 }
