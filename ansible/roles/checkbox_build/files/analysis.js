@@ -41,7 +41,7 @@ function main()
 	for( var node in builders )
 	{
 		var builder = builders[node];
-		if(builder.BigO > 3 || builder.SyncCalls > 1 || builder.NumLines > 120 || builder.longestMessageChain > 3) 
+		if(builder.BigO > 3 || builder.SyncCalls > 1 || builder.NumLines > 120 || builder.LongestMessageChain > 3) 
 		{
 			console.log('******FAIL******');
 			builder.report();
