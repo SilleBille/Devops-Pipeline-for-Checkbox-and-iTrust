@@ -30,22 +30,22 @@ var fuzzer =
 
             if(line.match("while") || line.match("if"))
             {
-                if(fuzzer.random().bool(0.5) && line.match(">"))
+                if(fuzzer.random().bool(0.6) && line.match(">"))
                     line = line.replace('>','<');
-                if(fuzzer.random().bool(0.5) && line.match("<"))
+                if(fuzzer.random().bool(0.6) && line.match("<"))
                     line = line.replace('<','>');
-                if(fuzzer.random().bool(0.5) && line.match("=="))
+                if(fuzzer.random().bool(0.6) && line.match("=="))
                     line = line.replace('==','!=');
-                if(fuzzer.random().bool(0.5) && line.match("!="))
+                if(fuzzer.random().bool(0.6) && line.match("!="))
                     line = line.replace('!=','==');
             }
 
-            if(fuzzer.random().bool(0.5) && line.match('"((\\"|[^"])+0(\\"|[^"])*|(\\"|[^"])*0(\\"|[^"])+)"'))
+            if(fuzzer.random().bool(0.7) && line.match('"((\\"|[^"])+0(\\"|[^"])*|(\\"|[^"])*0(\\"|[^"])+)"'))
                 line = line.replace('0','1');
 
-            if(fuzzer.random().bool(0.5) && line.match('(["\'])(\\"|\\\'|[^"\'])+\1') && !line.match("//") 
+            if(fuzzer.random().bool(0.3) && line.match('\"(\\"|[^\"])*\"') && !line.match("//") 
                     && !line.match("@"))
-                line = line.replace(/(["\'])(\\"|\\\'|[^"\'])+\1/g, '"' + fuzzer.random().string(10) + '"')
+                line = line.replace(/\"(\\"|[^\"])*\"/g, '"' + fuzzer.random().string(10) + '"')
 
             fs.appendFileSync(tempFilePath, line + '\n');
         });
