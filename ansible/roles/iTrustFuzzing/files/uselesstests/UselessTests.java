@@ -178,7 +178,7 @@ public class UselessTests
 			{
 				passedCases.remove(testCase);
 			}
-			else if(!listOfTestCases.contains(testName))
+			else if(!listOfTestCases.contains(testCase))
 			{
 				passedCases.put(testCase, clazz);
 			}
