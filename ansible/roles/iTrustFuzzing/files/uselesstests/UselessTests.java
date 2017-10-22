@@ -180,9 +180,9 @@ public class UselessTests
 			}
 			else if(!listOfTestCases.contains(testName))
 			{
-				listOfTestCases.add(testCase);
 				passedCases.put(testCase, clazz);
 			}
+			listOfTestCases.add(testCase);
 		}
 	}
 
