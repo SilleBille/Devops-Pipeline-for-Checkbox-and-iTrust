@@ -165,7 +165,7 @@ function functionLongestMessageChain(buf,functionHead)
     traverseWithParents(functionHead, function(child){
         if(child.type === 'MemberExpression')
 	{
-	    currentMessageChain = 0;
+	    currentMessageChain = 1;
             traverseWithParents(child, function(grandChild){
 	        if(grandChild.type === 'MemberExpression')
 		{
