@@ -230,11 +230,13 @@ function complexity(filePath)
 {
 	var buf = fs.readFileSync(filePath, "utf8");
 	var ast = esprima.parse(buf, options);
-
+	
 	var i = 0;
 
-	// A file level-builder:
+	// A file-level builder:
 	var fileBuilder = new FileBuilder();
+	// A function-level builder
+	var builder = new FunctionBuilder();
 	fileBuilder.FileName = filePath;
 	fileBuilder.ImportCount = 0;
 	builders[filePath] = fileBuilder;
@@ -242,9 +244,9 @@ function complexity(filePath)
 	// Tranverse program with a function visitor.
 	traverseWithParents(ast, function (node) 
 	{
-		var builder = new FunctionBuilder();
 		if (node.type === 'FunctionDeclaration' || node.type === 'FunctionExpression' ) 
 		{
+			builder = new FunctionBuilder();
 			builder.FunctionName = functionName(node);
 			builder.StartLine    = node.loc.start.line;
 			builder.ParameterCount    = functionParamCount(node);
