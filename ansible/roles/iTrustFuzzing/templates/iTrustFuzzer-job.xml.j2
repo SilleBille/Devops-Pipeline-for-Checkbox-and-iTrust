@@ -42,24 +42,18 @@
   </triggers>
   <concurrentBuild>false</concurrentBuild>
   <builders>
-    <hudson.tasks.Shell>
-      <command>cd iTrust
+    <hudson.plugins.build__timeout.BuildStepWithTimeout plugin="build-timeout@1.19">
+      <strategy class="hudson.plugins.build_timeout.impl.AbsoluteTimeOutStrategy">
+        <timeoutMinutes>5</timeoutMinutes>
+      </strategy>
+      <buildStep class="hudson.tasks.Shell">
+        <command>cd iTrust
 mvn test</command>
-    </hudson.tasks.Shell>
+      </buildStep>
+      <operationList class="empty-list"/>
+    </hudson.plugins.build__timeout.BuildStepWithTimeout>
   </builders>
   <publishers>
-    <hudson.plugins.postbuildtask.PostbuildTask plugin="postbuild-task@1.8">
-      <tasks>
-        <hudson.plugins.postbuildtask.TaskProperties>
-          <logTexts/>
-          <EscalateStatus>false</EscalateStatus>
-          <RunIfJobSuccessful>false</RunIfJobSuccessful>
-          <script>cd /var/lib/jenkins/uselesstests&#xd;
-javac UselessTests.java&#xd;
-java UselessTests</script>
-        </hudson.plugins.postbuildtask.TaskProperties>
-      </tasks>
-    </hudson.plugins.postbuildtask.PostbuildTask>
     <hudson.tasks.junit.JUnitResultArchiver plugin="junit@1.21">
       <testResults>**/target/surefire-reports/*.xml</testResults>
       <keepLongStdio>false</keepLongStdio>
@@ -94,6 +88,18 @@ java UselessTests</script>
       <deltaClassCoverage>0</deltaClassCoverage>
       <buildOverBuild>false</buildOverBuild>
     </hudson.plugins.jacoco.JacocoPublisher>
+    <hudson.plugins.postbuildtask.PostbuildTask plugin="postbuild-task@1.8">
+      <tasks>
+        <hudson.plugins.postbuildtask.TaskProperties>
+          <logTexts/>
+          <EscalateStatus>false</EscalateStatus>
+          <RunIfJobSuccessful>false</RunIfJobSuccessful>
+          <script>cd /var/lib/jenkins/uselesstests&#xd;
+javac UselessTests.java&#xd;
+java UselessTests</script>
+        </hudson.plugins.postbuildtask.TaskProperties>
+      </tasks>
+    </hudson.plugins.postbuildtask.PostbuildTask>
   </publishers>
   <buildWrappers>
     <hudson.plugins.ws__cleanup.PreBuildCleanup plugin="ws-cleanup@0.34">

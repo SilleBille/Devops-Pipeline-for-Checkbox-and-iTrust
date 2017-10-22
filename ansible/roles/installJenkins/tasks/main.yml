@@ -132,6 +132,7 @@
     - ws-cleanup
     - jacoco
     - random-string-parameter
+    - build-timeout
   become: yes
 
 - name: Update Sudoers file for Jenkins User

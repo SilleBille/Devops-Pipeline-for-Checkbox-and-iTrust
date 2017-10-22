@@ -45,4 +45,6 @@
     copy:
       src: uselesstests
       dest: "{{jenkins_home_dir}}"
+      owner: jenkins
+      group: jenkins
     become: yes
