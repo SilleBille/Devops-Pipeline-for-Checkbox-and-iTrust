@@ -148,6 +148,26 @@ function traverseWithParents(object, visitor)
 
 function functionLongestMessageChain(buf,functionHead)
 {
+    var currentMessageChain = 0;
+    var longestMessageChain = 0;
+    traverseWithParents(functionHead, function(child){
+        if(child.type === 'MemberExpression')
+	{
+	    currentMessageChain = 0;
+            traverseWithParents(child, function(grandChild){
+	        if(grandChild.type === 'MemberExpression')
+		{
+		    ++currentMessageChain;
+		}
+	    });
+	    if(longestMessageChain < currentMessageChain)
+	    {
+                longestMessageChain = currentMessageChain;
+	    }
+	}
+    });
+    return longestMessageChain;
+/*
     var start_line = functionHead.loc.start.line;
     var end_line = functionHead.loc.end.line;
     var current_line = 1;
@@ -222,6 +242,7 @@ function functionLongestMessageChain(buf,functionHead)
         }
     }
     return longest_message_chain;
+*/
 }
 
 
