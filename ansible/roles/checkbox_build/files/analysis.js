@@ -45,13 +45,13 @@ function main()
 		{
 			console.log('******FAIL******');
 			builder.report();
+			console.log('\n\n');
 		}
-                else
+                /*else
 		{
 			console.log('******PASS******');
 			builder.report();
-		}
-		console.log('\n\n');
+		}*/
 	}
 }
 
