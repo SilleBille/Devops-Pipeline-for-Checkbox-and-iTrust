@@ -174,15 +174,18 @@ public class UselessTests
 		
 		public void finalizeCase() 
 		{ 
-			if(failed)
+			if(!clazz.contains("AddApptRequestAction"))
 			{
-				passedCases.remove(testCase);
+				if(failed)
+				{
+					passedCases.remove(testCase);
+				}
+				else if(!listOfTestCases.contains(testCase))
+				{
+					passedCases.put(testCase, clazz);
+				}
+				listOfTestCases.add(testCase);
 			}
-			else if(!listOfTestCases.contains(testCase))
-			{
-				passedCases.put(testCase, clazz);
-			}
-			listOfTestCases.add(testCase);
 		}
 	}
 

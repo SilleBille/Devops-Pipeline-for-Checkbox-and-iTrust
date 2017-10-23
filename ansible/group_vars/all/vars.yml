@@ -5,6 +5,7 @@ ansible_home_dir: "{{ ansible_env.HOME }}"
 jenkins_cli_jar_loc: "{{ansible_home_dir}}"
 jenkins_home_dir: /var/lib/jenkins/
 
+jenkins_iTrust_job_name: iTrustJob
 jenkins_iTrust_fuzzer_job_name: iTrust-fuzzer-job
 jenkins_checkbox_job_name: checkbox-job 
 
