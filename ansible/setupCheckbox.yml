@@ -1,6 +1,5 @@
 ---
 - hosts: localhost
   roles:
-    - installJenkins
     - checkbox_build
 ...

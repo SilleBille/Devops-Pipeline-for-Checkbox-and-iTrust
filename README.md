@@ -2,9 +2,9 @@
 Shared repo for CSC519 Devops project
 
 ## Screencast videos
-1. [Initial setup of Jenkins and jobs](https://youtu.be/imblg5dbplI)
-2. [iTrust Fuzzing demo](https://youtu.be/6xCsl53w4ZM)
-3. [Checkbox.io Analysis demo](https://youtu.be/aLI4A-pZERQ)
+1. [Initial setup of Jenkins and jobs]()
+2. [iTrust Fuzzing demo]()
+3. [Checkbox.io Analysis demo]()
 
 ## Environment required to run the project
     - Ubuntu 16.04 x64 (Desktop Edition) – running natively
@@ -23,6 +23,9 @@ Shared repo for CSC519 Devops project
 
 ### Cloned repo for iTrust used in this project
     https://github.ncsu.edu/dmolugu/iTrust-v23.git
+
+### To setup complete jenkins Environment with checkbox and iTrust jobs
+    ansible-playbook milestone2.yml -K --ask-vault-pass
     
 ### To setup the iTrust Environment
     ansible-playbook setupiTrust.yml -K --ask-vault-pass
