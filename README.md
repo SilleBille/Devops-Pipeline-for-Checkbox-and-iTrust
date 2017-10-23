@@ -2,8 +2,8 @@
 Shared repo for CSC519 Devops project
 
 ## Screencast videos
-1. [Initial setup of Jenkins and jobs]()
-2. [iTrust Fuzzing demo]()
+1. [Initial setup of Jenkins and jobs](https://youtu.be/VJ59JBodJAw)
+2. [iTrust Fuzzing demo](https://youtu.be/RjVnMZLPgZo) [Fuzzing commit pushes](https://youtu.be/jZfE_re3Yao)
 3. [Checkbox.io Analysis demo]()
 
 ## Environment required to run the project
@@ -14,7 +14,7 @@ Shared repo for CSC519 Devops project
 ## Instructions to run the project
     git clone https://github.ncsu.edu/dmolugu/CSC519-Project.git
     cd CSC519-Project
-    git checkout m2   
+    git checkout m2
     cd ansible
 
     # Export GIT_ID and GIT_TOKEN
