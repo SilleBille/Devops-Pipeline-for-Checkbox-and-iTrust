@@ -76,7 +76,7 @@ function commit(masterSHA, commitNumber) {
 
 function triggerJenkinsBuild(lastCommitSha) {
     console.log("Triggering build for " + lastCommitSha);
-    execSync('curl http://{{jenkins_ip}}:8080/git/notifyCommit?url={{github_iTrust_project}}&branches=fuzzer&sha1=' + lastCommitSha);
+    execSync("curl 'http://{{jenkins_ip}}:8080/git/notifyCommit?url={{github_iTrust_project}}&sha1=" + lastCommitSha + "'");
 }
 
 function revertToOriginal(masterSHA) {
