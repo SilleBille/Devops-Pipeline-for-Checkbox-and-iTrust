@@ -2,8 +2,9 @@
 Shared repo for CSC519 Devops project
 
 ## Screencast videos
-1. [Initial setup of Jenkins and jobs](https://youtu.be/VJ59JBodJAw)
-2. [iTrust Fuzzing demo](https://youtu.be/RjVnMZLPgZo) [Fuzzing commit pushes](https://youtu.be/jZfE_re3Yao)
+1. [Initial setup of Jenkins and jobs + Code Coverage of iTrust](https://youtu.be/VJ59JBodJAw)
+2. [iTrust Fuzzing demo](https://youtu.be/RjVnMZLPgZo) 
+     - [Automatic pushing demo](https://youtu.be/jZfE_re3Yao)
 3. [Checkbox.io Analysis demo]()
 
 ## Environment required to run the project
