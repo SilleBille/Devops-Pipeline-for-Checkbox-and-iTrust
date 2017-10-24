@@ -65,6 +65,9 @@ The number of useless test cases mentioned above, significantly dropped from `~7
 
 #### Checkbox code analysis
 
+[Complete report of Detected Items](https://github.ncsu.edu/dmolugu/CSC519-Project/blob/m2/checkbox_output.md)
+
+The above link is a markdown file that provides the complete report of the Detected Items in the analysis of Checkbox server-side code.
 
 
 ### Team Members and Their Contributions
