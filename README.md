@@ -5,7 +5,7 @@ Shared repo for CSC519 Devops project
 1. [Initial setup of Jenkins and jobs + Code Coverage of iTrust](https://youtu.be/VJ59JBodJAw)
 2. [iTrust Fuzzing demo](https://youtu.be/RjVnMZLPgZo) 
      - [Automatic pushing demo](https://youtu.be/jZfE_re3Yao)
-3. [Checkbox.io Analysis demo]()
+3. [Checkbox.io Analysis demo](https://www.youtube.com/watch?v=qQTq3GTAyDM&feature=youtu.be)
 
 ## Organization of this branch
 
@@ -49,6 +49,9 @@ Shared repo for CSC519 Devops project
 #### Vault Password (need to be provided while running the ansible-playbook)
     jenkins
 
+### To setup Checkbox Job and run analysis
+    ansible-playbook setupCheckbox.yml -K --ask-vault-pass
+
 ### Observations and Report
 
 #### iTrust fuzzer
@@ -75,5 +78,7 @@ The number of useless test cases mentioned above, significantly dropped from `~7
     - Created script to commit, revert, push and trigger jenkins build after every fuzzer run
 
 - Manushri (manush)
+    - Created Ansible Playbook for setting up Jenkins job and the environment required for Checkbox
+    - Created Analysis.js script to implement BigO, SyncCalls, LongMethod Detection.
 
 - Mukundram Muraliram (mmurali5)

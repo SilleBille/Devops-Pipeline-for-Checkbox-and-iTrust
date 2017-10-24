@@ -16,7 +16,6 @@ function main()
 	if( args.length == 0 )
 	{
 		filepath = ["analysis.js"];
-//		complexity(ana_file);
 	} else {
 		if (process.argv.length < 3) {
 		    console.log('Usage: analysis.js checkbox-io_directory');
@@ -158,103 +157,79 @@ function traverseWithParents(object, visitor)
     }
 }
 
-function functionLongestMessageChain(buf,functionHead)
+
+// Used to traverse the inner nodes to check message passing
+function traverseWithMessagePassingParent(object, paraChainCount)
+{
+    var key, child, chainCount;
+
+    if(object.type === 'MemberExpression' && object.computed==false)
+	{
+		if(object.object.type == 'Identifier')
+		{
+			paraChainCount++
+		}
+		if(object.property.type == 'Identifier')
+		{
+			paraChainCount++
+		}
+	}
+
+	var originalChainCount = paraChainCount
+	var resultChainCount = originalChainCount
+    for (key in object) {
+        if (object.hasOwnProperty(key)) {
+			child = object[key];
+            if (typeof child === 'object' && child !== null && key != 'parent') 
+            {
+				if(child.type === 'CallExpression')
+				{	
+					child.arguments.parent = child;
+					var callExpressionCount = traverseWithMessagePassingParent(child.arguments, 0);
+					
+					child.callee.parent = child;
+					chainCount = traverseWithMessagePassingParent(child.callee, originalChainCount);
+					
+					if(chainCount < callExpressionCount)
+						chainCount = callExpressionCount
+				}
+				else if(child.type === 'MemberExpression')
+				{
+					child.parent = object;
+					
+					chainCount = traverseWithMessagePassingParent(child, originalChainCount);
+				}
+				else
+				{
+					child.parent = object;
+					var newChainCount = traverseWithMessagePassingParent(child, 0);
+					chainCount = originalChainCount < newChainCount ? newChainCount : originalChainCount
+				}
+
+				resultChainCount = resultChainCount < chainCount ? chainCount : resultChainCount
+            }
+        }
+	}
+	return resultChainCount
+}
+
+function functionLongestMessageChain(functionHead)
 {
     var currentMessageChain = 0;
-    var longestMessageChain = 0;
-    traverseWithParents(functionHead, function(child){
-        if(child.type === 'MemberExpression')
+	var longestMessageChain = 0;
+	
+	traverseWithParents(functionHead, function(functionChild)
 	{
-	    currentMessageChain = 1;
-            traverseWithParents(child, function(grandChild){
-	        if(grandChild.type === 'MemberExpression')
+		if( functionChild.type == 'MemberExpression')
 		{
-		    ++currentMessageChain;
+			currentMessageChain = traverseWithMessagePassingParent(functionChild, 0)
 		}
-	    });
-	    if(longestMessageChain < currentMessageChain)
-	    {
-                longestMessageChain = currentMessageChain;
-	    }
-	}
-    });
-    return longestMessageChain;
-/*
-    var start_line = functionHead.loc.start.line;
-    var end_line = functionHead.loc.end.line;
-    var current_line = 1;
-    var tracking = 0;
-    var i;
-    var longest_message_chain = 0;
-    var message_chain = 0;
-    var ignore_line = false;
-    var block_comment = false;
-    for(i=0;i<buf.length;++i)
-    {
-        if(buf[i] === '\n')
-        {
-            ++current_line;
-        }
-        if(current_line === start_line)
-        {
-            break;
-        }
-    }
-    for(;i<buf.length;++i)
-    {
-        if(buf[i] === '\n')
-        {
-            ++current_line;
-            if(message_chain > longest_message_chain)
-            {
-                longest_message_chain = message_chain;
-            }
-            message_chain = 0;
-            if(current_line > end_line)
-            {
-                break;
-            }
-        }
-        else if(buf[i] === '(')
-        {
-            ++tracking;
-        }
-        else if(buf[i] === ')')
-        {
-            --tracking;
-        }
-        else if(i<buf.length-1 && buf[i] === '/' && buf[i+1] === '/')
-        {
-            ++i;++i;
-            while(i<buf.length && buf[i]!=='\n')
-            {
-                ++i;
-            }
-            ++i;
-        }
-        else if(i<buf.length && buf[i] === '/' && buf[i+1] === '*')
-        {
-            ++i;++i;
-            while(i<buf.length-1 && !(buf[i]==='*' && buf[i+1]=='/'))
-            {
-                ++i;
-            }
-            ++i;++i;
-        }
-        else
-        {
-            if(tracking === 0)
-            {
-                if(buf[i] === '.')
-                {
-                    if(message_chain === 0) ++message_chain;
-                    ++message_chain;
-                }
-            }
-        }
-    }
-    return longest_message_chain;
-*/
+
+		if(longestMessageChain < currentMessageChain)
+			longestMessageChain = currentMessageChain;
+	})
+
+	return longestMessageChain;
 }
 
 
@@ -284,11 +259,10 @@ function complexity(filePath)
 			builder.FunctionName = functionName(node);
 			builder.StartLine    = node.loc.start.line;
 			builder.ParameterCount    = functionParamCount(node);
-//			builder.BigO    = functionBigO(node,0, builder);
 			functionBigO(node,0, builder);
 			builder.NumLines    = functionNumLines(node);
 			builder.SyncCalls    = functionSyncCalls(node);
-			builder.LongestMessageChain = functionLongestMessageChain(buf,node);
+			builder.LongestMessageChain = functionLongestMessageChain(node);
 		}
 	builders[builder.FunctionName] = builder;
  
@@ -320,7 +294,6 @@ function functionSyncCalls(node)
     }
 	traverseWithParents(node, function(child)
 	    {
-// 	      	if(child.callee && child.callee.property && child.callee.property.name=='readFileSync')
  	      	if(child.callee && child.callee.property && child.callee.property.name.endsWith('Sync'))
 	              count++;
 	        });
@@ -528,7 +501,7 @@ mints.toString().split(".")[0] + " " + szmin;
   }
  
 
-function temp(argument)
+/* function temp(argument)
 {
         fs.readFileSync('jade/singlechoice.jade', 'utf8');
         var singlechoice = jade.compile(fs.readFileSync('jade/singlechoice.jade', 'utf8'),options);
@@ -558,5 +531,7 @@ function temp(argument)
 
 
 function temp2(argument) {}
+*/
 
 exports.main = main;
+

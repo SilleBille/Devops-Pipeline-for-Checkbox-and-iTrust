@@ -10,7 +10,7 @@
     state: present
   become: yes
 
-- name: Install the package "npm"
+- name: Install the package "nodejs"
   apt:
     name: nodejs-legacy
     state: present
