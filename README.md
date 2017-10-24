@@ -7,6 +7,17 @@ Shared repo for CSC519 Devops project
      - [Automatic pushing demo](https://youtu.be/jZfE_re3Yao)
 3. [Checkbox.io Analysis demo]()
 
+## Organization of this branch
+
+- `ansible/` = contains all the ansible scripts
+- `ansible/milestone2.yml` = To setup the entire Milestone 2 (Instructions below)
+- `ansible/setupiTrust.yml` = To setup the iTrust code coverage and Fuzzer
+- `ansible/setupCheckbox.yml` = To setup the Checkbox code analysis and run a build again server-side code
+- `ansible/roles/iTrustFuzzing/templates/fuzz.js.j2` = Contains the fuzzer code
+- `ansible/roles/iTrustFuzzing/files/UselessTests.java` = Useless test detector program
+- `builds/` = Contains the output of 100 fuzzer runs that includes logs and useless test case results
+- `builds/100/uselessTests.txt` = Contains the useless test cases detected. Generated based on 100 builds
+
 ## Environment required to run the project
     - Ubuntu 16.04 x64 (Desktop Edition) – running natively
     - Ansible 2.4.0.0 installed
@@ -31,9 +42,37 @@ Shared repo for CSC519 Devops project
 ### To setup the iTrust Environment
     ansible-playbook setupiTrust.yml -K --ask-vault-pass
 
-### Jenkins Credentials
+#### Jenkins Credentials (Used internally)
     Username: mkd_test1
     Password: mkd_test_passwd_1
 
-#### Vault Password
+#### Vault Password (need to be provided while running the ansible-playbook)
     jenkins
+
+### Observations and Report
+
+#### iTrust fuzzer
+
+1. Whenever there is a push to `master` branch of iTrust (forked version), fuzzer is triggered through `prepush` hook
+2. iTrust was fuzzed for 100 times over `master` branch which replaces `<` with `>` , `0` with `1`, `""` with `"<random string>"`, `==` with `!=` and vice versa. We ignored the `/model/` and `/sql/` to avoid unnecessary errors since they don't include any logical part required by the project.
+3. All 100 builds failed since the modification of condition leads to one or more testcase failures
+4. We found around `272` useless test cases (ie) the test cases that passed all the time even after fuzzing
+
+The number of useless test cases mentioned above, significantly dropped from `~700` to `~300` due to large number of Database errors. We observed that such errors were caused due to improper handling of Database connections. Many connections were left open which is evident from the `Too Many Connections` errors. Even after increasing the `max_connections` and `connect_timeout` values in MySQL, these error occurred intermittently. The numbers stabilized at around build #11. 
+
+#### Checkbox code analysis
+
+
+
+### Team Members and Their Contributions
+
+- Vishal Murugan (vmuruga)
+    - Designed the Fuzzer and Useless test case detection programs
+
+- Dinesh Prasanth M K (dmolugu)
+    - Created Ansible Playbook for setting up Jenkins and the environment required for iTrust
+    - Created script to commit, revert, push and trigger jenkins build after every fuzzer run
+
+- Manushri (manush)
+
+- Mukundram Muraliram (mmurali5)
