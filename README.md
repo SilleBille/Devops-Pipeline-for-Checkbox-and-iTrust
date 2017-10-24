@@ -85,3 +85,5 @@ The above link is a markdown file that provides the complete report of the Detec
     - Created Analysis.js script to implement BigO, SyncCalls, LongMethod Detection.
 
 - Mukundram Muraliram (mmurali5)
+    - Created Ansible Playbook for installing and configuring Jenkins required for Checkbox
+    - Created function to detect length of the Longest Message Chain
