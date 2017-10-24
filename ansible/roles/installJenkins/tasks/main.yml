@@ -13,7 +13,7 @@
 - name: Add Oracle Repository
   apt_repository:
     repo: 'ppa:webupd8team/java'
- 
+  become: yes 
 - name: Accept Oracle License
   debconf: 
     name: 'oracle-java8-installer' 
