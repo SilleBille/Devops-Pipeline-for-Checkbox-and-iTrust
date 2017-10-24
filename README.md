@@ -68,6 +68,7 @@ The number of useless test cases mentioned above, significantly dropped from `~7
 
 - Vishal Murugan (vmuruga)
     - Designed the Fuzzer and Useless test case detection programs
+    - Integrated Fuzzer and Useless test case detection with the jenkins job
 
 - Dinesh Prasanth M K (dmolugu)
     - Created Ansible Playbook for setting up Jenkins and the environment required for iTrust
