@@ -65,7 +65,7 @@ The number of useless test cases mentioned above, significantly dropped from `~7
 
 #### Checkbox code analysis
 
-[Complete report of Detected Items](https://github.ncsu.edu/dmolugu/CSC519-Project/blob/m2/checkbox_output.md)
+[Complete report of Detected Items](/useless-test-graph.jpg?raw=true )
 
 The above link is a markdown file that provides the complete report of the Detected Items in the analysis of Checkbox server-side code.
 
@@ -87,3 +87,8 @@ The above link is a markdown file that provides the complete report of the Detec
 - Mukundram Muraliram (mmurali5)
     - Created Ansible Playbook for installing and configuring Jenkins required for Checkbox
     - Created function to detect length of the Longest Message Chain
+    
+## Useless test case graph
+
+![Graph](/useless-test-graph.jpg "Useless test case graph")
+
