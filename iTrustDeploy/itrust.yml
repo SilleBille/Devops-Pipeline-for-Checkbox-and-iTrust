@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  roles:
+    - installJenkins
+    - iTrustSetup
+    - iTrustJenkinsJob
+  
+# - hosts: iTrust-deploy-nodes
+#   roles:    
+#     - iTrustDeploy

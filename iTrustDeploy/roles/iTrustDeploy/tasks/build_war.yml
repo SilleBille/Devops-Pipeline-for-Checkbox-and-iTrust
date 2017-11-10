@@ -1,0 +1,24 @@
+- name: "Installing maven"
+  apt: package="maven" state="present"
+  become: yes
+
+- name: clone iTrust
+  git:
+    repo: "{{github_iTrust_authenticated}}" 
+    dest: "{{iTrustTempLocation}}"
+    force: yes
+
+# - name: Renaming folder
+#   command: mv {{iTrustTempLocation}}* {{iTrustTempLocation}}
+
+# # Copy module for 1k+ files takes longer. Use rsync instead
+# - name: "Copying required iTrust files for building"
+#   synchronize:
+#     src: "{{iTrustRepoLocation}}"
+#     dest: "{{iTrustTempLocation}}"
+
+- name: "Building war file for iTrust"
+  command: "mvn package -DskipTests"
+  args:
+    chdir: "{{iTrustTempLocation}}/iTrust"
+  become: yes

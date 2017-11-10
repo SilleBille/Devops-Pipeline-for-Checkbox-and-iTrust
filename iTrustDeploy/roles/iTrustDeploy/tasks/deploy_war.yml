@@ -1,0 +1,10 @@
+- name: "Check whether path exists"
+  file: path={{ apacheDeployLocation }} state=directory
+  become: yes
+
+- name: "Deploying war file to tomcat"
+  unarchive:
+    src: "{{iTrustTempLocation}}/iTrust/target/iTrust-23.0.0.war"
+    dest: "{{ apacheDeployLocation }}"
+    remote_src: True
+  become: yes
