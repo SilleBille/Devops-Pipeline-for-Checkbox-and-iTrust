@@ -7,6 +7,8 @@ jenkins_home_dir: /var/lib/jenkins/
 jenkins_iTrust_job_name: iTrustJob
 jenkins_checkbox_job_name: checkbox-job 
 
+jenkins_git_secret_text: git_secret_token
+
 jenkins_username: mkd_test1
 jenkins_password: !vault |
       $ANSIBLE_VAULT;1.1;AES256
