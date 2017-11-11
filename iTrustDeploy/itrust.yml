@@ -2,9 +2,6 @@
 - hosts: iTrust-jenkins-mysql
   roles:
     - installJenkins
+    - installAnsible
     - iTrustSetup
     - iTrustJenkinsJob
-  
-# - hosts: iTrust-deploy-nodes
-#   roles:    
-#     - iTrustDeploy

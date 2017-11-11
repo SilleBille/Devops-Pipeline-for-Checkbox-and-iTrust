@@ -37,7 +37,7 @@
     path: "{{jenkins_home_dir}}/github-plugin-configuration.xml"
     state: absent
   become: yes
-  
+
 - name: Configuring github plugin
   template:
     src: gitConfigure.xml
@@ -69,6 +69,48 @@
   become: yes
   shell: "java -jar {{ jenkins_cli_jar_loc }}/jenkins-cli.jar -s http://{{ jenkins_ip }}:{{ jenkins_port }}/ create-job {{ jenkins_iTrust_job_name }} < /tmp/itrust_temp.xml --username {{jenkins_username}} --password {{jenkins_password}}"
   when: jenkins_cb_stat.stdout.find(jenkins_iTrust_job_name)==-1
+
+- name: Remove previous secrets of nodes
+  file:
+    path: "{{jenkins_home_dir}}/secret-nodes.yml"
+    state: absent
+  become: yes
+
+- name: Remove previous playbook versions
+  file:
+    path: "{{jenkins_home_dir}}/deploy"
+    state: absent
+  become: yes
+
+- name: Copy secrets required for deploying
+  become: yes
+  copy:
+    src: secret-nodes.yml
+    dest: "{{jenkins_home_dir}}"
+    owner: jenkins
+    mode: 0400
+    
+- name: Copy deployment playbook
+  become: yes
+  copy:
+    src: iTrustDeploy/
+    dest: "{{jenkins_home_dir}}/deploy"
+    owner: jenkins
+
+- name: Copy vault pass
+  become: yes
+  copy:
+    src: vault-pass.txt
+    dest: "{{jenkins_home_dir}}deploy/vault-pass.txt"
+    owner: jenkins
+
+- name: Copy inventory
+  become: yes
+  template:
+    src: inventory-deploy.yml.j2
+    dest: "{{jenkins_home_dir}}/deploy/inventory-deploy.yml"
+    owner: jenkins
+
 
 # - name: Build Jenkins Job for iTrust
 #   become: yes

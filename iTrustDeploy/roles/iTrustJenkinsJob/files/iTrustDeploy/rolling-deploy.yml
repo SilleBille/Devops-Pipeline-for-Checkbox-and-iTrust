@@ -1,0 +1,4 @@
+---
+- hosts: iTrust-deploy-nodes
+  roles:    
+    - iTrustDeploy
