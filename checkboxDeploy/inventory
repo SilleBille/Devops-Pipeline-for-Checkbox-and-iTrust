@@ -1,4 +1,4 @@
-control ansible_host=localhost ansible_user=ubuntu
+control ansible_host=localhost ansible_user=ubuntu ansible_python_interpreter=/usr/bin/python3
 
 [nodes]
 server nomad_node_role=server nomad_iface=enp0s8 consul_node_role=bootstrap consul_iface=enp0s8 consul_client_address=192.168.33.11 ansible_host=192.168.33.10 ansible_user=ubuntu ansible_ssh_private_key_file=/ssh/server/virtualbox/private_key ansible_python_interpreter=/usr/bin/python3
