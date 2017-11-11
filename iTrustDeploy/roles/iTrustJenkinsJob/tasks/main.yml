@@ -11,7 +11,7 @@
 
 - name: Copying credentials xml
   template:
-    src: gitCredentials.xml.j2 
+    src: gitCredentials.xml.j2
     dest: /tmp/credentials.xml
   when: "git_creds.stdout.find('jenkins-github-read-write-user') == -1"
 

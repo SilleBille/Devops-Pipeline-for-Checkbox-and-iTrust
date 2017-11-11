@@ -1,5 +1,5 @@
 [iTrust-jenkins-mysql]
-52.15.242.232 ansible_user=ubuntu ansible_ssh_private_key_file=./ubuntu-host.pem ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+18.216.195.194 ansible_user=ubuntu ansible_ssh_private_key_file=./ubuntu-host.pem ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 [iTrust-deploy-nodes]
 18.216.27.57 ansible_user=ubuntu ansible_ssh_private_key_file=./ubuntu-host.pem ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
