@@ -71,6 +71,3 @@
 # - shell: echo "export JRE_HOME="/usr/lib/jvm/java-8-oracle/jre"" >> /etc/environment
 #   become: yes
 
-- name: "Starting Apache server"
-  command: nohup {{ apache_install_location }}/tomcat9/bin/startup.sh
-  become: yes
