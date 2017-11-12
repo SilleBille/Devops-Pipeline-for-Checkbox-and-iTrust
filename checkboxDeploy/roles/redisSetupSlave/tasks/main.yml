@@ -29,6 +29,7 @@
   command: make test
   args:
     chdir: "{{ansible_env.HOME}}/redis-stable/"
+  ignore_errors: yes
 
 - name: Comment out Bind IP in redis.conf file
   replace:
