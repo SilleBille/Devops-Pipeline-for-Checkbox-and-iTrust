@@ -7,11 +7,14 @@
   roles:
     - initialSetupClients
 
-- hosts: nodes
+- hosts: nomad_instances
   become: yes
   pre_tasks:
   - name: Disable Firewall
     service: name=ufw state=stopped
+  - name: Wait for 30 sec
+    pause:
+      seconds: 30
   roles:   
   - role: brianshumate.nomad
     nomad_bind_address: 0.0.0.0
