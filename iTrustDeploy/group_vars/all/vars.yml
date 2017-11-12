@@ -1,6 +1,6 @@
 jenkins_ip: localhost
 jenkins_port: 8080
-ansible_home_dir: "{{ ansible_env.HOME }}"
+ansible_home_dir: "/home/ubuntu/"
 jenkins_cli_jar_loc: "{{ansible_home_dir}}"
 jenkins_home_dir: /var/lib/jenkins/
 
@@ -23,5 +23,16 @@ jenkins:
   url: "http://{{jenkins_ip}}:{{jenkins_port}}"
   validate_certs: no
 
+GIT_ID: "{{lookup('env', 'GIT_ID_P')}}"
+GIT_TOKEN: "{{lookup('env', 'GIT_TOKEN_P')}}"
+
 github_iTrust_project: https://github.ncsu.edu/dmolugu/iTrust-v23.git
-github_iTrust_authenticated: https://{{ansible_env.GIT_ID}}:{{ansible_env.GIT_TOKEN}}@github.ncsu.edu/dmolugu/iTrust-v23.git
+github_iTrust_authenticated: https://{{GIT_ID}}:{{GIT_TOKEN}}@github.ncsu.edu/dmolugu/iTrust-v23.git
+
+
+aws_access_key: "{{ansible_env.AWS_KEY}}"
+aws_secret_key: "{{ansible_env.AWS_SECRET_KEY}}"
+aws_region: us-east-2
+ami_id: ami-336b4456
+instance_type: t2.micro
+key_pair: ubuntu-host
