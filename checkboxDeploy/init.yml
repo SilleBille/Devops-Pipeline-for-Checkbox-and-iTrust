@@ -4,15 +4,10 @@
 
 - hosts: localhost
   tasks:
-  - name: Add Ansible Repo
-    become: yes
-    apt_repository: repo=ppa:ansible/ansible
-
-  - name: Install Ansible
+  - name: Install essential packages
     become: yes
     apt: name={{item}} update_cache=yes
     with_items:
-    - ansible
     - python-netaddr
 
   - name: Install Roles
