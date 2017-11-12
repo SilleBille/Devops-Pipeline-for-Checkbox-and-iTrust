@@ -1,0 +1,7 @@
+- name: Copy checkbox.nomad to remote system
+  copy:
+    src: "checkbox.nomad"
+    dest: "{{ansible_env.HOME}}/checkbox.nomad"
+
+- name: Start nomad job
+  shell: "nomad run {{ansible_env.HOME}}/checkbox.nomad"

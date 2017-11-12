@@ -16,6 +16,7 @@
   git:
     repo: https://github.com/chrisparnin/checkbox.io.git
     dest: "{{ansible_env.HOME}}/checkbox/"
+    force: yes
 
 - name: Install the forever node package
   npm:
@@ -57,35 +58,9 @@
     dest: "/etc/nginx/sites-available/default"
   become: yes
 
-- name: Add apt key for mongodb-org
-  apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: 7F0CEB10
-    state: present
+- name: Restarting NGINX
+  service:
+    name: nginx
+    state: restarted
   become: yes
-
-- name: Add apt source for mongodb
-  apt_repository:
-    repo: deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse
-    state: present
-  become: yes
-
-- name: Install mongodb
-  apt:
-    pkg: mongodb
-    state: present
-    update_cache: yes
-  become: yes
-
-- name: Install pymongo to use with mongodb
-  pip:
-    name: pymongo
-    state: present
-  become: yes
-
-- name: Add mongodb user
-  mongodb_user:
-    database: "{{mongodb_database}}"
-    name: "{{mongodb_user}}"
-    password: "{{mongodb_pass}}"
 ...
