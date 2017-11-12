@@ -1,0 +1,4 @@
+- hosts: checkbox
+  roles:
+    - checkboxSetup
+    - checkboxRestartServices

@@ -1,0 +1,86 @@
+---
+- name: Install essential packages
+  apt:
+    pkg: "{{item}}"
+    state: present    
+    update_cache: yes
+  become: yes
+  with_items: "{{packages}}"
+
+- name: "Copying required checkbox files for building"
+  synchronize:
+    src: "{{checkBoxRepoLocation}}/"
+    dest: "{{ansible_env.HOME}}/checkbox/"
+
+- name: Install the forever node package
+  npm:
+    global: yes
+    name: forever
+  become: yes
+
+- name: Install the node packages using npm
+  npm:
+    path: "{{ansible_env.HOME}}/checkbox/server-side/site"
+
+- name: Copy nginx conf file from repo to nginx (part 1)
+  fetch:
+    src: "{{ansible_env.HOME}}/checkbox/local-conf/nginx.conf"
+    dest: "{{lookup('env', 'HOME')}}/nginx.conf"
+    flat: yes
+
+- name: Copy nginx conf file from repo to nginx (part 2)
+  copy:
+    src: "{{lookup('env', 'HOME')}}/nginx.conf"
+    dest: "/etc/nginx/nginx.conf"
+  become: yes
+
+- name: Replace the server root in the "default" file
+  replace:
+    dest: "{{ansible_env.HOME}}/checkbox/local-conf/default"
+    regexp: "root (.)+;"
+    replace: "root {{ansible_env.HOME}}/checkbox/public_html/;"
+
+- name: Copy "default" file to nginx sites-available folder (part 1)
+  fetch:
+    src: "{{ansible_env.HOME}}/checkbox/local-conf/default"
+    dest: "{{lookup('env', 'HOME')}}/default"
+    flat: yes
+
+- name: Copy "default" file to nginx sites-available folder (part 2)
+  copy:
+    src: "{{lookup('env', 'HOME')}}/default"
+    dest: "/etc/nginx/sites-available/default"
+  become: yes
+
+- name: Add apt key for mongodb-org
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 7F0CEB10
+    state: present
+  become: yes
+
+- name: Add apt source for mongodb
+  apt_repository:
+    repo: deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse
+    state: present
+  become: yes
+
+- name: Install mongodb
+  apt:
+    pkg: mongodb
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Install pymongo to use with mongodb
+  pip:
+    name: pymongo
+    state: present
+  become: yes
+
+- name: Add mongodb user
+  mongodb_user:
+    database: "{{mongodb_database}}"
+    name: "{{mongodb_user}}"
+    password: "{{mongodb_pass}}"
+...
