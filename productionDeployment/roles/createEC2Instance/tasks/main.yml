@@ -1,6 +1,24 @@
 - name: Exporting necessary environment variable
   shell: export ANSIBLE_HOST_KEY_CHECKING=False
 
+- name: Install Prerequisites
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - python3-pip
+  become: yes
+
+- name: Install pymongo to use with mongodb
+  pip:
+    name: "{{item}}"
+    state: present
+  become: yes
+  with_items:
+    - boto
+    - boto3
+
 - name: Checking if EC2 instance for jenkins exists
   ec2_remote_facts:
     aws_access_key: "{{aws_access_key}}"
@@ -30,16 +48,6 @@
       "tag:Name": checkbox
       "instance-state-code": "16"
   register: ec2_checkbox
-
-- name: Checking if EC2 instance for checkbox nomad exists
-  ec2_remote_facts:
-    aws_access_key: "{{aws_access_key}}"
-    aws_secret_key: "{{aws_secret_key}}"
-    region: "{{aws_region}}"
-    filters:
-      "tag:Name": checkbox_nomad
-      "instance-state-code": "16"
-  register: ec2_checkbox_nomad
 
 - name: Checking if EC2 instance for checkbox_canary exists
   ec2_remote_facts:
@@ -120,27 +128,6 @@
   register: checkbox_instance
   when: ec2_checkbox.instances | length==0
 
-  - name: Launch new instances for checkbox nomad
-  ec2:
-    key_name: "{{ key_pair }}"
-    aws_access_key: "{{aws_access_key}}"
-    aws_secret_key: "{{aws_secret_key}}"
-    instance_type: "{{ instance_type }}"
-    group_id: "{{basic_firewall.group_id}}"
-    image: "{{ ami_id }}"
-    wait: true
-    region: "{{ aws_region }}"
-    instance_tags:
-      Name: checkbox_nomad
-    count: 1
-  register: checkbox_nomad_instance
-  when: ec2_checkbox_nomad.instances | length!=4
-  with_items: 
-    - tags: ['Name', 'checkbox_nomad1']
-    - tags: ['Name', 'checkbox_nomad2']
-    - tags: ['Name', 'checkbox_nomad3']
-    - tags: ['Name', 'checkbox_nomad4']
-
 - name: Launch new instances for checkbox-canary
   ec2:
     key_name: "{{ key_pair }}"
@@ -180,14 +167,6 @@
 - name: Fetching Public IP For newly created checkbox Instance. 
   set_fact: checkbox_ec2_ip="{{ checkbox_instance.instances[0].public_ip }}"
   when: ec2_checkbox.instances|length==0
-
-- name: Fethching Public IP for existing checkbox nomad instance
-  set_fact: checkbox_nomad_ec2_ip="{{ec2_checkbox_nomad.instances[0].public_ip_address}}"
-  when: ec2_checkbox_nomad.instances|length>0
-
-- name: Fetching Public IP For newly created checkbox nomad Instance. 
-  set_fact: checkbox_nomad_ec2_ip="{{ checkbox_nomad_instance.instances[0].public_ip }}"
-  when: ec2_checkbox_nomad.instances|length==0
 
 - name: Add the instance to group for installing Jenkins
   add_host:
@@ -249,41 +228,6 @@
   set_fact: iTrust4_ec2_ip="{{new_instances.results[4]['instances'][0].private_ip}}"
   when: ec2_iTrust.instances|length!=5
 
-
-
-- name: Get Private IP of existing checkbox-0 group instances
-  set_fact: checkbox0_nomad_ec2_ip="{{ec2_checkbox_nomad.instances[0].private_ip_address}}"
-  when: ec2_checkbox_nomad.instances|length==4
-
-- name: Get Private IP of existing checkbox-1 group instances
-  set_fact: checkbox1_nomad_ec2_ip="{{ec2_checkbox_nomad.instances[1].private_ip_address}}"
-  when: ec2_checkbox_nomad.instances|length==4
-
-- name: Get Private IP of existing checkbox-2 group instances
-  set_fact: checkbox2_nomad_ec2_ip="{{ec2_checkbox_nomad.instances[2].private_ip_address}}"
-  when: ec2_checkbox_nomad.instances|length==4
-
-- name: Get Private IP of existing checkbox-3 group instances
-  set_fact: checkbox3_nomad_ec2_ip="{{ec2_checkbox_nomad.instances[3].private_ip_address}}"
-  when: ec2_checkbox_nomad.instances|length==4
-
-
-- name: Get Private IP of new checkbox-0 group instances
-  set_fact: checkbox0_nomad_ec2_ip="{{checkbox_nomad_instance.results[0]['instances'][0].private_ip}}"
-  when: ec2_checkbox_nomad.instances|length!=4
-
-- name: Get Private IP of new checkbox-1 group instances
-  set_fact: checkbox1_nomad_ec2_ip="{{checkbox_nomad_instance.results[1]['instances'][0].private_ip}}"
-  when: ec2_checkbox_nomad.instances|length!=4
-
-- name: Get Private IP of new checkbox-2 group instances
-  set_fact: checkbox2_nomad_ec2_ip="{{checkbox_nomad_instance.results[2]['instances'][0].private_ip}}"
-  when: ec2_checkbox_nomad.instances|length!=4
-
-- name: Get Private IP of new checkbox-3 group instances
-  set_fact: checkbox3_nomad_ec2_ip="{{checkbox_nomad_instance.results[3]['instances'][0].private_ip}}"
-  when: ec2_checkbox_nomad.instances|length!=4
-
 - name: Dkjfklsdjfl - iTrust1
   debug:
     msg: "{{iTrust1_ec2_ip}}"
@@ -295,5 +239,3 @@
 - name: Public IP of checkbox node
   debug:
     msg: "{{checkbox_ec2_ip}}"
-
-

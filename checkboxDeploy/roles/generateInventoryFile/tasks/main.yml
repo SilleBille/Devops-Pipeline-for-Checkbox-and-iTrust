@@ -1,0 +1,5 @@
+---
+- name: copy inventory file to home folder
+  template:
+    src: "inventory.j2"
+    dest: "{{ansible_env.HOME}}/inventory"

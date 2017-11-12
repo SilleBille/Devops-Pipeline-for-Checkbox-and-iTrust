@@ -1,6 +1,9 @@
+---
 - hosts: localhost
   roles:
-    - createVM
+    # - createVM
+    - createEC2Instance
+    - generateInventoryFile
 
 - hosts: localhost
   tasks:
@@ -12,3 +15,4 @@
 
   - name: Install Roles
     command: ansible-galaxy install -r requirements.yml
+...

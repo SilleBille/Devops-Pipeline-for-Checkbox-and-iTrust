@@ -1,0 +1,20 @@
+[servers]
+server1 nomad_node_role=server nomad_iface=eth0 consul_node_role=bootstrap consul_iface=eth0 consul_client_address={{checkbox0_nomad_ec2_ip}} ansible_host={{checkbox0_nomad_ec2_ip}} ansible_user=ubuntu ansible_ssh_private_key_file=./ubuntu-host.pem ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[clients]
+nomad1 nomad_node_role=client nomad_iface=eth0 consul_node_role=client consul_iface=eth0 consul_client_address={{checkbox1_nomad_ec2_ip}} ansible_host={{checkbox1_nomad_ec2_ip}} ansible_user=ubuntu ansible_ssh_private_key_file=./ubuntu-host.pem ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+nomad2 nomad_node_role=client nomad_iface=eth0 consul_node_role=client consul_iface=eth0 consul_client_address={{checkbox2_nomad_ec2_ip}} ansible_host={{checkbox2_nomad_ec2_ip}} ansible_user=ubuntu ansible_ssh_private_key_file=./ubuntu-host.pem ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+nomad3 nomad_node_role=client nomad_iface=eth0 consul_node_role=client consul_iface=eth0 consul_client_address={{checkbox3_nomad_ec2_ip}} ansible_host={{checkbox3_nomad_ec2_ip}} ansible_user=ubuntu ansible_ssh_private_key_file=./ubuntu-host.pem ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[nodes]
+[nodes:children]
+servers
+clients
+
+[nomad_instances]
+[nomad_instances:children]
+nodes
+
+[consul_instances]
+[consul_instances:children]
+nodes
