@@ -1,4 +1,4 @@
-jenkins_ip: localhost
+jenkins_ip: "{{ hostvars['localhost']['jenkins_ec2_ip']}}"
 jenkins_port: 8080
 ansible_home_dir: "/home/ubuntu/"
 jenkins_cli_jar_loc: "{{ansible_home_dir}}"
