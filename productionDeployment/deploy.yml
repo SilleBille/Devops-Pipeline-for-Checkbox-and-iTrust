@@ -14,7 +14,7 @@
   roles:
     - installJenkins
     - installAnsible
-#     - iTrustSetup
-#     - iTrustJenkinsJob
-#     - fixMySqlIp
+    - iTrustSetup
+    - iTrustJenkinsJob
+    - fixMySqlIp
     - checkboxJenkinsJob
