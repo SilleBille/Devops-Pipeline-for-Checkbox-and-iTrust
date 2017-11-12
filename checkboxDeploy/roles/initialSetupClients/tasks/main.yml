@@ -12,9 +12,20 @@
     - python3-pip
   become: yes
 
+- name: stat checkbox location
+  stat:
+    path: "{{ansible_env.HOME}}/checkbox/"
+  register: cb_stat
+
+- name: Remove folder if it exists
+  command: rm -rf "{{ansible_env.HOME}}/checkbox/"
+  when: cb_stat.stat.exists==True
+  become: yes
+
 - name: Clone the checkbox repo
   git:
-    repo: https://github.com/chrisparnin/checkbox.io.git
+#    repo: https://github.com/chrisparnin/checkbox.io.git
+    repo: 'https://github.com/manushri-singh/checkbox.io.git'
     dest: "{{ansible_env.HOME}}/checkbox/"
     force: yes
 

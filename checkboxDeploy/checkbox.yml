@@ -2,6 +2,7 @@
 - hosts: servers
   roles:
     - initialSetupServer
+    - redisSetupMaster
 
 - hosts: clients
   roles:
@@ -27,6 +28,7 @@
 - hosts: clients
   roles:
   - configNomadClients
+  - redisSetupSlave
 
 - hosts: servers
   roles:
