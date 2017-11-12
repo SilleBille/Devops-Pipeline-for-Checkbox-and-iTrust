@@ -30,6 +30,14 @@
   register: command_result
   changed_when: 'command_result.stdout.find("VirtualBox VM is already running") == -1'
 
+- name: Add SSH fingerprints                                         
+  shell: ssh-keyscan -H {{ item }} >> ~/.ssh/known_hosts          
+  with_items: 
+    - "{{hostvars.server1.ansible_host}}"
+    - "{{hostvars.nomad1.ansible_host}}"
+    - "{{hostvars.nomad2.ansible_host}}"
+    - "{{hostvars.nomad3.ansible_host}}"
+
 - name: Wait for the VM to boot up to SSH
   pause:
     seconds: 30
