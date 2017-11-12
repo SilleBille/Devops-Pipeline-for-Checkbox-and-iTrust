@@ -142,12 +142,12 @@
   set_fact: mysql_ec2_ip="{{ jenkins_instance.instances[0].private_ip }}"
   when: ec2_jenkins.instances|length==0
 
-- name: Fethching Private IP for existing checkbox instance
-  set_fact: checkbox_ec2_ip="{{ec2_checkbox.instances[0].private_ip_address}}"
+- name: Fethching Public IP for existing checkbox instance
+  set_fact: checkbox_ec2_ip="{{ec2_checkbox.instances[0].public_ip_address}}"
   when: ec2_checkbox.instances|length>0
 
-- name: Fetching Private IP For newly created checkbox Instance. 
-  set_fact: checkbox_ec2_ip="{{ checkbox_instance.instances[0].private_ip }}"
+- name: Fetching Public IP For newly created checkbox Instance. 
+  set_fact: checkbox_ec2_ip="{{ checkbox_instance.instances[0].public_ip }}"
   when: ec2_checkbox.instances|length==0
 
 - name: Add the instance to group for installing Jenkins
