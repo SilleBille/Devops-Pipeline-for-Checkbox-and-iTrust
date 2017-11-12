@@ -9,5 +9,6 @@ Use the [**m1 branch**](https://github.ncsu.edu/dmolugu/CSC519-Project/tree/m1)
 Use the [**m2 branch**](https://github.ncsu.edu/dmolugu/CSC519-Project/tree/m2)
 
 #### Milestone 3 - 
+Use the [**m3 branch**](https://github.ncsu.edu/dmolugu/CSC519-Project/tree/m3)
 
 #### Milestone 4 - 
