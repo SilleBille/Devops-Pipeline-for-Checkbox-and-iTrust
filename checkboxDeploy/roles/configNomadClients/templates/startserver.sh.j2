@@ -1,0 +1,6 @@
+export MONGO_PORT=3002
+export MONGO_IP={{hostvars.server.ansible_host}}
+export MONGO_USER={{mongodb_user}}
+export MONGO_PASSWORD={{mongodb_pass}}
+cd /home/ubuntu/checkbox/server-side/site
+node server.js

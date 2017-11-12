@@ -1,0 +1,31 @@
+---
+- hosts: servers
+  roles:
+    - initialSetupServer
+
+- hosts: clients
+  roles:
+    - initialSetupClients
+
+- hosts: nodes
+  become: yes
+  pre_tasks:
+  - name: Disable Firewall
+    service: name=ufw state=stopped
+  roles:   
+  - role: brianshumate.nomad
+    nomad_bind_address: 0.0.0.0
+    nomad_docker_enable: no
+  post_tasks:
+  - name: Wait for the VM to boot up to SSH
+    pause:
+      seconds: 30
+
+- hosts: clients
+  roles:
+  - configNomadClients
+
+- hosts: servers
+  roles:
+  - startNomadJob
+...

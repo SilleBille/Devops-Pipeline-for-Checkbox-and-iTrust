@@ -1,2 +1,0 @@
-[iTrust-jenkins-mysql]
-18.216.195.194 ansible_user=ubuntu ansible_ssh_private_key_file=./ubuntu-host.pem ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
