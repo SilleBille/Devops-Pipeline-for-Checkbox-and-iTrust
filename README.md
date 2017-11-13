@@ -22,6 +22,18 @@ Shared repo for CSC519 Devops project
     export GIT_TOKEN_P=<Personal access token>
     export AWS_KEY=<AWS KEY>
     export AWS_SECRET_KEY=<AWS SECRET KEY>
+    
+## Instructions to setup deployment (2) nomad
+    git clone https://github.ncsu.edu/dmolugu/CSC519-Project.git
+    cd CSC519-Project
+    git checkout m3
+    cd checkboxDeploy
+    
+    export AWS_KEY=<AWS KEY>
+    export AWS_SECRET_KEY=<AWS SECRET KEY>
+    copy the ubuntu-host.pem file from aws and place it in the current folder with proper permissions (0400 or 0600)
+    ansible-playbook init.yml --ask-vault-pass -K
+    ansible-playbook checkbox.yml -i ~/inventory --ask-vault-pass
 
 ***Cloned repo for iTrust used in this project***
     https://github.ncsu.edu/dmolugu/iTrust-v23.git
