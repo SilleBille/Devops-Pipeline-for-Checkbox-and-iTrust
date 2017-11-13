@@ -3,7 +3,7 @@ Shared repo for CSC519 Devops project
 
 ## Screencast videos
 1. [Deployment of iTrust, checkbox + Rolling update](https://youtu.be/h9HZ2_0ME5Q)
-2. 
+2. [Deployment of checkbox on a Nomad Cluster on AWS](https://youtu.be/MOcHQcCc248)
 3. 
 
 ## Environment required to run the project
@@ -42,7 +42,7 @@ Shared repo for CSC519 Devops project
 ### Team Members and Their Contributions
 
 - Vishal Murugan (vmuruga)
-
+    - Wrote ansible playbook to install Nomad on AWS
 - Dinesh Prasanth M K (dmolugu)
     - Created Ansible Playbook for setting up EC2 instances (for checkbox and iTrust deployment), Jenkins and the environment required for iTrust and checkbox deployment
     - Configuration of auto-trigger for checkbox and iTrust jobs whenever there is a push to github repo
