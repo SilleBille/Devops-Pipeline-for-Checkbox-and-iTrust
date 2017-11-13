@@ -4,7 +4,8 @@ Shared repo for CSC519 Devops project
 ## Screencast videos
 1. [Deployment of iTrust, checkbox + Rolling update](https://youtu.be/h9HZ2_0ME5Q)
 2. [Deployment of checkbox on a Nomad Cluster on AWS](https://youtu.be/MOcHQcCc248)
-3. 
+3. [Redis Feature Flag on checkbox](https://youtu.be/g6LNFfFpkoI)
+4. 
 
 ## Environment required to run the project
     - Ubuntu 16.04 x64 (Desktop Edition) – running natively
@@ -61,6 +62,8 @@ Shared repo for CSC519 Devops project
     - iTrust rolling update
 
 - Manushri (manush)
+    - Wrote ansible playbook to install Redis on AWS
+    - Modify checkbox.io code to implement Redis Feature Flag for toggling the Survey feature
 
 - Mukundram Muraliram (mmurali5)
 
