@@ -1,4 +1,6 @@
 - hosts: checkbox
+  vars:
+    checkBoxRepoLocation: "{{ lookup('env', 'HOME')}}/jobs/checkbox-job/workspace"
   roles:
     - checkboxSetup
     - checkboxRestartServices

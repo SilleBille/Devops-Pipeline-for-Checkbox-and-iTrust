@@ -7,7 +7,13 @@
   become: yes
   with_items: "{{packages}}"
 
-- name: "Copying required checkbox files for building"
+- name: Delete existing checkbox files
+  file: 
+    path: "{{ansible_env.HOME}}/checkbox/"
+    state: absent
+  become: yes
+
+- name: Copying required checkbox files for building
   synchronize:
     src: "{{checkBoxRepoLocation}}/"
     dest: "{{ansible_env.HOME}}/checkbox/"

@@ -1,1 +1,0 @@
-checkBoxRepoLocation: "{{lookup('env', 'HOME')}}/jobs/checkbox-job/workspace"
