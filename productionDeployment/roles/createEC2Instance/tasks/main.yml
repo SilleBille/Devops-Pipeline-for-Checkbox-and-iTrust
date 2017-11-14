@@ -229,6 +229,15 @@
     state: started
   when: ec2_jenkins.instances|length==0       
   
+- name: Wait for the EC2 proxy to completely boot up
+  wait_for:
+    host: "{{ checkbox_proxy_ec2_ip }}"
+    port: 22
+    delay: 60
+    timeout: 320
+    state: started
+  when: ec2_checkbox_proxy.instances|length==0 
+
 - name: Add SSH fingerprints                                         
   shell: ssh-keyscan -H {{ item }} >> ~/.ssh/known_hosts          
   with_items: 
