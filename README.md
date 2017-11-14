@@ -66,4 +66,7 @@ Shared repo for CSC519 Devops project
     - Modify checkbox.io code to implement Redis Feature Flag for toggling the Survey feature
 
 - Mukundram Muraliram (mmurali5)
+    - Configuration of proxy/canary servers
+    - Enable proxy server to balance load between two servers
+    - Enable proxy server to ignore canary server upon failure
 
