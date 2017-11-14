@@ -12,7 +12,7 @@ Shared repo for CSC519 Devops project
     - Ansible 2.4.0.0 installed
     - Cloned Github repo – m3 branch
     
-## Instructions to setup deployment (1) and rolling-update (4)
+## Instructions to setup Deployment (1), Canary Release (3) and Rolling-Update (4)
     git clone https://github.ncsu.edu/dmolugu/CSC519-Project.git
     cd CSC519-Project
     git checkout m3
@@ -42,8 +42,8 @@ Shared repo for CSC519 Devops project
 ***Clone repo for checkbox.io used for Deployment***
     https://github.ncsu.edu/dmolugu/checkbox.io
 
-### To setup iTrust and checkbox.io jenkins job
-    ansible-playbook --ask-vault-pass deploy.yml
+### To setup iTrust, checkbox.io and checkbox-canary jenkins job 
+    ansible-playbook --ask-vault-pass deploy.yml -K # -K ensures installatino of boto and boto3 in localhost
 
 #### Jenkins Credentials (Used internally)
     Username: mkd_test1
