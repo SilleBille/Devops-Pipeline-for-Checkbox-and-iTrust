@@ -1,2 +1,2 @@
 apacheDeployLocation: /usr/local/tomcat9/webapps/iTrust
-iTrustTempLocation: "{{lookup('env', 'HOME')}}/workspace/iTrustJob"
+iTrustTempLocation: "{{lookup('env', 'HOME')}}/jobs/iTrustJob/workspace"

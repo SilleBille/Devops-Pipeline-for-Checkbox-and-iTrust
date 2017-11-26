@@ -15,6 +15,10 @@ jenkins_gerrit_secret_ssh: gerrit_ssh_config
 
 gerrit_ID: csc-devops17
 
+gerrit_project_name: SilleBille/iTrust
+gerrit_project_url: review.gerrithub.io:29418/{{gerrit_project_name}}
+gerrit_server_name: gerrithub-iTrust
+
 jenkins_username: mkd_test1
 jenkins_password: !vault |
       $ANSIBLE_VAULT;1.1;AES256
