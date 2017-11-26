@@ -7,8 +7,13 @@ jenkins_home_dir: /var/lib/jenkins/
 jenkins_iTrust_job_name: iTrustJob
 jenkins_checkbox_job_name: checkbox-job
 jenkins_checkbox_canary_job_name: checkbox-canary-job 
+jenkins_iTrust_bot_job_name: iTrust-bot-job
 
 jenkins_git_secret_text: git_secret_token
+
+jenkins_gerrit_secret_ssh: gerrit_ssh_config
+
+gerrit_ID: csc-devops17
 
 jenkins_username: mkd_test1
 jenkins_password: !vault |
@@ -27,8 +32,8 @@ jenkins:
 GIT_ID: "{{lookup('env', 'GIT_ID_P')}}"
 GIT_TOKEN: "{{lookup('env', 'GIT_TOKEN_P')}}"
 
-github_iTrust_project: https://github.ncsu.edu/dmolugu/iTrust-v23.git
-github_iTrust_authenticated: https://{{GIT_ID}}:{{GIT_TOKEN}}@github.ncsu.edu/dmolugu/iTrust-v23.git
+github_iTrust_project: https://github.com/SilleBille/iTrust.git
+github_iTrust_authenticated: https://{{GIT_ID}}:{{GIT_TOKEN}}@github.com/SilleBille/iTrust.git
 
 
 aws_access_key: "{{ansible_env.AWS_KEY}}"

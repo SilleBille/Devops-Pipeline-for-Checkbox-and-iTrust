@@ -35,7 +35,7 @@
  
 - name: Add Jenkins Repository Key
   apt_key:
-    url: "https://jenkins-ci.org/debian/jenkins-ci.org.key"
+    url: "https://pkg.jenkins.io/debian/jenkins-ci.org.key"
     state: present
     validate_certs: no
   become: yes
@@ -138,6 +138,7 @@
     - jacoco
     - random-string-parameter
     - build-timeout
+    - gerrit-trigger
   become: yes
 
 - name: Update Sudoers file for Jenkins User

@@ -39,36 +39,6 @@
       "instance-state-code": "16"
   register: ec2_iTrust
 
-- name: Checking if EC2 instance for checkbox exists
-  ec2_remote_facts:
-    aws_access_key: "{{aws_access_key}}"
-    aws_secret_key: "{{aws_secret_key}}"
-    region: "{{aws_region}}"
-    filters:
-      "tag:Name": checkbox
-      "instance-state-code": "16"
-  register: ec2_checkbox
-
-- name: Checking if EC2 instance for checkbox_canary exists
-  ec2_remote_facts:
-    aws_access_key: "{{aws_access_key}}"
-    aws_secret_key: "{{aws_secret_key}}"
-    region: "{{aws_region}}"
-    filters:
-      "tag:Name": checkbox_canary
-      "instance-state-code": "16"
-  register: ec2_checkbox_canary
-
-- name: Checking if EC2 instance for checkbox_proxy exists
-  ec2_remote_facts:
-    aws_access_key: "{{aws_access_key}}"
-    aws_secret_key: "{{aws_secret_key}}"
-    region: "{{aws_region}}"
-    filters:
-      "tag:Name": checkbox_proxy
-      "instance-state-code": "16"
-  register: ec2_checkbox_proxy
-
 - name: Create security group
   ec2_group:
     name: iTrust-deploy-group
@@ -89,7 +59,7 @@
     key_name: "{{ key_pair }}"
     aws_access_key: "{{aws_access_key}}"
     aws_secret_key: "{{aws_secret_key}}"
-    instance_type: "{{ instance_type }}"
+    instance_type: "t2.xlarge"
     group_id: "{{basic_firewall.group_id}}"
     image: "{{ ami_id }}"
     wait: true
@@ -122,53 +92,6 @@
     - tags: ['Name', 'iTrust4']
     - tags: ['Name', 'iTrust5']
 
-- name: Launch new instances for checkbox
-  ec2:
-    key_name: "{{ key_pair }}"
-    aws_access_key: "{{aws_access_key}}"
-    aws_secret_key: "{{aws_secret_key}}"
-    instance_type: "{{ instance_type }}"
-    group_id: "{{basic_firewall.group_id}}"
-    image: "{{ ami_id }}"
-    wait: true
-    region: "{{ aws_region }}"
-    instance_tags:
-      Name: checkbox
-    count: 1
-  register: checkbox_instance
-  when: ec2_checkbox.instances | length==0
-
-- name: Launch new instances for checkbox-canary
-  ec2:
-    key_name: "{{ key_pair }}"
-    aws_access_key: "{{aws_access_key}}"
-    aws_secret_key: "{{aws_secret_key}}"
-    instance_type: "{{ instance_type }}"
-    group_id: "{{basic_firewall.group_id}}"
-    image: "{{ ami_id }}"
-    wait: true
-    region: "{{ aws_region }}"
-    instance_tags:
-      Name: checkbox_canary
-    count: 1
-  register: checkbox_canary_instance
-  when: ec2_checkbox_canary.instances | length==0
-
-- name: Launch new instances for checkbox-proxy
-  ec2:
-    key_name: "{{ key_pair }}"
-    aws_access_key: "{{aws_access_key}}"
-    aws_secret_key: "{{aws_secret_key}}"
-    instance_type: "{{ instance_type }}"
-    group_id: "{{basic_firewall.group_id}}"
-    image: "{{ ami_id }}"
-    wait: true
-    region: "{{ aws_region }}"
-    instance_tags:
-      Name: checkbox_proxy
-    count: 1
-  register: checkbox_proxy_instance
-  when: ec2_checkbox_proxy.instances | length==0
 
 - name: Fethching Public IP for existing jenkins instance
   set_fact: jenkins_ec2_ip="{{ec2_jenkins.instances[0].public_ip_address}}"
@@ -186,39 +109,10 @@
   set_fact: mysql_ec2_ip="{{ jenkins_instance.instances[0].private_ip }}"
   when: ec2_jenkins.instances|length==0
 
-- name: Fethching Public IP for existing checkbox instance
-  set_fact: checkbox_ec2_ip="{{ec2_checkbox.instances[0].public_ip_address}}"
-  when: ec2_checkbox.instances|length>0
-
-- name: Fetching Public IP For newly created checkbox Instance. 
-  set_fact: checkbox_ec2_ip="{{ checkbox_instance.instances[0].public_ip }}"
-  when: ec2_checkbox.instances|length==0
-
-- name: Fethching Public IP for existing canary instance
-  set_fact: checkbox_canary_ec2_ip="{{ec2_checkbox_canary.instances[0].public_ip_address}}"
-  when: ec2_checkbox_canary.instances|length>0
-
-- name: Fetching Public IP For newly created canary Instance. 
-  set_fact: checkbox_canary_ec2_ip="{{ checkbox_canary_instance.instances[0].public_ip }}"
-  when: ec2_checkbox_canary.instances|length==0
-
-- name: Fethching Public IP for existing proxy instance
-  set_fact: checkbox_proxy_ec2_ip="{{ec2_checkbox_proxy.instances[0].public_ip_address}}"
-  when: ec2_checkbox_proxy.instances|length>0
-
-- name: Fetching Public IP For newly created proxy Instance. 
-  set_fact: checkbox_proxy_ec2_ip="{{ checkbox_proxy_instance.instances[0].public_ip }}"
-  when: ec2_checkbox_proxy.instances|length==0
-
 - name: Add the instance to group for installing Jenkins
   add_host:
     hostname: "{{ jenkins_ec2_ip }}"
     groupname: iTrust-checkbox-jenkins-mysql
-
-- name: Add the instance for installing proxy
-  add_host:
-    hostname: "{{ checkbox_proxy_ec2_ip }}"
-    groupname: proxy_server
 
 - name: Wait for the EC2 instance to completely boot up
   wait_for:
@@ -229,20 +123,10 @@
     state: started
   when: ec2_jenkins.instances|length==0       
   
-- name: Wait for the EC2 proxy to completely boot up
-  wait_for:
-    host: "{{ checkbox_proxy_ec2_ip }}"
-    port: 22
-    delay: 60
-    timeout: 320
-    state: started
-  when: ec2_checkbox_proxy.instances|length==0 
-
 - name: Add SSH fingerprints                                         
   shell: ssh-keyscan -H {{ item }} >> ~/.ssh/known_hosts          
   with_items: 
     - "{{ jenkins_ec2_ip }}"
-    - "{{ checkbox_proxy_ec2_ip }}"
 
 - name: Get Private IP of existing iTrust-0 group instances
   set_fact: iTrust0_ec2_ip="{{ec2_iTrust.instances[0].private_ip_address}}"
@@ -284,15 +168,3 @@
 - name: Get Private IP of new iTrust-4 group instances
   set_fact: iTrust4_ec2_ip="{{new_instances.results[4]['instances'][0].private_ip}}"
   when: ec2_iTrust.instances|length!=5
-
-- name: Dkjfklsdjfl - iTrust1
-  debug:
-    msg: "{{iTrust1_ec2_ip}}"
-
-- name: PUblic IP of jenkins node
-  debug:
-    msg: "{{jenkins_ec2_ip}}"
-
-- name: Public IP of checkbox node
-  debug:
-    msg: "{{checkbox_ec2_ip}}"

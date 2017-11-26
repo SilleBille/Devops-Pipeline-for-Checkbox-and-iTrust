@@ -1,7 +1,0 @@
----
-packages:
-  - gcc
-  - make
-  - libc6-dev
-  - tcl
-...

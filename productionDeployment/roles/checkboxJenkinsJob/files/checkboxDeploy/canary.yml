@@ -1,6 +1,0 @@
-- hosts: canary
-  vars:
-    checkBoxRepoLocation: "{{ lookup('env', 'HOME')}}/jobs/checkbox-canary-job/workspace"
-  roles:
-    - checkboxSetup
-    - checkboxRestartServices
