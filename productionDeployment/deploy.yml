@@ -12,9 +12,9 @@
   connection: ssh
   gather_facts: False
   roles:
-    #- installJenkins
-    #- installAnsible
-    #- iTrustSetup
-    #- iTrustJenkinsJob
-    #- createBotBuildJob
+    - installJenkins
+    - installAnsible
+    - iTrustSetup
+    - iTrustJenkinsJob
+    - createBotBuildJob
     - fixMySqlIp

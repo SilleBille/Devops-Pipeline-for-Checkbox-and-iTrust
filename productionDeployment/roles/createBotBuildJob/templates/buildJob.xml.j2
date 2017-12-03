@@ -8,14 +8,14 @@
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <refspec>$GERRIT_REFSPEC</refspec>
+        <refspec>$GERRIT_REFSPEC:$GERRIT_REFSPEC</refspec>
         <url>$GERRIT_SCHEME://{{gerrit_ID}}@$GERRIT_HOST:$GERRIT_PORT/$GERRIT_PROJECT</url>
         <credentialsId>{{jenkins_gerrit_secret_ssh}}</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-        <name>$GERRIT_BRANCH</name>
+        <name>$GERRIT_REFSPEC</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
