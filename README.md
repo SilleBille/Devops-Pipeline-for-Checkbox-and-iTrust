@@ -9,13 +9,23 @@ Shared repo for CSC519 Devops project
 [Screenshots](Screenshots/)
 
 ## Project Description
-The main goal of this milestone is to setup a bot which performs automatic patch verification. We tried to implement an industry standard to our project pipeline (ie) add peer code-review mechanism. 
+The main goal of this milestone is to setup a bot which performs automatic patch verification. We tried to implement an industry standard to our project pipeline (i.e.) add peer code-review mechanism. 
 
 Whenever a patch is submitted by a developer, the reviewer takes a look and approves it. However, there is caveat here; the reviewer might not identify a buggy code. So, we developed a bot which verifies the patch whenever it is submitted. The reviewer can now confidently review the code and approve/deny the code merge.
 
-We designed this milestone in a way that it fits our project pipeline. Whenever the patch is approved and merged, it magically triggers the `iTrustJob` which performs the rolling update that we designed as a part of M3. This milestone thus fits the pipeline very smoothly.
+We designed this milestone in a way that it fits our project pipeline. Whenever the patch is approved and merged, it automatically triggers the `iTrustJob` which performs the rolling update that we designed as a part of M3. This milestone thus fits the pipeline very smoothly.
 
-<Image to be added here!!!!!! @manush>
+![Alt text](arch.jpg?raw=true "Architecture")
+
+The above figure depicts a basic architecture of our milestone.
+1. Developer submits patch to GerritHub
+2. Jenkins listens for patches and triggers the bot job
+3. Jenkins job runs all the 1164 unit test cases in iTrust and updates the patch with `Verified +1` label if all tests pass. (if not `Verified -1` is added)
+4. Reviewer(s) review the code and mark success (Code-Review +1 or +2) or failure (return to step 1)
+5. Developer now has the permission to click on submit (merge the code with the repo) as shown in the screenshot
+6. The Gerrithub pushes the code automatically to the linked Github repo's `master` branch
+7. This triggers another Jenkins job that was created in M3 for rolling update of iTrust
+8. The job does rolling update on all 5 instances of iTrust
 
 ## Gerrithub - Hosted Code Review Tool
 GerritHub is a hosted code review tool which works with GitHub. It provides an interface for managing and creating code reviews, which can be initiated from a GitHub pull request. By using Gerrit Code Review we can improve the security, collaboration and visibility of changes for the development team. The benefits is provides are:
@@ -23,6 +33,7 @@ GerritHub is a hosted code review tool which works with GitHub. It provides an i
 2. Defines validation rules which needs to be passed for each commit.
 3. Limit damages caused by accidental force pushes.
 4. Have fine grained permissions on the branch level.
+
 ## Gerrit Trigger plugin for Jenkins
 This plugin integrates Jenkins to Gerrit code review for triggering builds whenever a patch set is created. Using this plugin, we can interact with the Gerrit repository to perform our automated code review.
 
@@ -110,8 +121,8 @@ The link to the exact plugin is: [https://wiki.jenkins.io/display/JENKINS/Gerrit
     - Researched about how to trigger jobs for the code that is not pushed to Github and trigger correct job against the latest SHA1
     - Created Ansible Playbook for implement the bot
 
-- Manushri (manush)
-    - 
+- Manushri (manush):
+    - Researched about the GerritHub Tool, Code review procedure and how it interacts with Github
 
 - Mukundram Muraliram (mmurali5)
     - 
