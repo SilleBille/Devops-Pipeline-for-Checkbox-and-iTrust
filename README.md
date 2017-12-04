@@ -18,9 +18,13 @@ We designed this milestone in a way that it fits our project pipeline. Whenever 
 <Image to be added here!!!!!! @manush>
 
 ## Gerrithub - Hosted Code Review Tool
-
-## Gerrit Trigger plugin
-
+GerritHub is a hosted code review tool which works with GitHub. It provides an interface for managing and creating code reviews, which can be initiated from a GitHub pull request. By using Gerrit Code Review we can improve the security, collaboration and visibility of changes for the development team. The benefits is provides are:
+1. Provides a common dashboard per project showing all pending changes.
+2. Defines validation rules which needs to be passed for each commit.
+3. Limit damages caused by accidental force pushes.
+4. Have fine grained permissions on the branch level.
+## Gerrit Trigger plugin for Jenkins
+This plugin integrates Jenkins to Gerrit code review for triggering builds whenever a patch set is created. Using this plugin, we can interact with the Gerrit repository to perform our automated code review.
 
 ## One time manual Setup:
 
