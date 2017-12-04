@@ -26,6 +26,8 @@ GerritHub is a hosted code review tool which works with GitHub. It provides an i
 ## Gerrit Trigger plugin for Jenkins
 This plugin integrates Jenkins to Gerrit code review for triggering builds whenever a patch set is created. Using this plugin, we can interact with the Gerrit repository to perform our automated code review.
 
+The link to the exact plugin is: [https://wiki.jenkins.io/display/JENKINS/Gerrit+Trigger](https://wiki.jenkins.io/display/JENKINS/Gerrit+Trigger)
+
 ## One time manual Setup:
 
 1. Create 2 accounts in GerritHub.io - one for the developer and one for the bot
