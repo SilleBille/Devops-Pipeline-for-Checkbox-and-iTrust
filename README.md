@@ -2,7 +2,7 @@
 Shared repo for CSC519 Devops project
 
 ## Screencast videos
-[Special Milestone - Code review through GerritHub + Patch verification through Bot](https://youtu.be/h9HZ2_0ME5Q)
+[Special Milestone - Code review through GerritHub + Patch verification through Bot](https://www.youtube.com/watch?v=zYVdxdbDWFw)
 
 [Slides](patch-verification-bot.pptx)
 
