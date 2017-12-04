@@ -121,9 +121,7 @@ The link to the exact plugin is: [https://wiki.jenkins.io/display/JENKINS/Gerrit
     - Researched about how to trigger jobs for the code that is not pushed to Github and trigger correct job against the latest SHA1
     - Created Ansible Playbook for implement the bot
 
-- Manushri (manush):
+- Manushri (manush) and Mukundram Muraliram (mmurali5):
     - Researched about the GerritHub Tool, Code review procedure and how it interacts with Github
-
-- Mukundram Muraliram (mmurali5)
-    - 
-
+    - Prepared slides for final presentation
+    - Recorded screencast for final presentation
